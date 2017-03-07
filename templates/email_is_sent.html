@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Läromedelsmässan 2017 </title>
+    <!--<link href="../static/styleinloggning.css" rel="stylesheet" type="text/css">-->
+    <link href="{{url_for('static', filename='styleinloggning.css')}}" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <header>
+
+    </header>
+
+    <section>
+      <figure><img alt='AV media logotyp' id='logo' src='{{url_for('static', filename='img/logotyp.png')}}'></figure>
+
+            <article id="aboutYou">
+                    <div id="container">
+                      <form action="/login/" method="post" id ="logIn">
+                        <p id="emailSent">Du har nu fått ett e-postmeddelande med en länk för att byta lösenord. </p>
+                        <p id="obs">OBS! har du inte fått e-postmeddelandet? titta i din skräppost. </p>
+                      </form>
+                    </div>
+                </article>
+      </div>
+      </div>
+    </section>
+</body>
+</html>

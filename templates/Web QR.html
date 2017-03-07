@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <title> Läromedelsmässan 2017 </title>
+    <!--<link href="../static/exhibStyle.css" rel="stylesheet" type="text/css">
+    <link href="../static/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <script src="../static/jquery.js" type="text/javascript"></script>
+    <script src="../static/exhibitor.js" type="text/javascript"></script>
+    <script src="../static/bower_components/qcode-decoder/build/qcode-decoder.min.js" type="text/javascript"></script>
+    <script src="../static/Web%20QR_files/llqrcode.js" type="text/javascript"></script>
+    <script src="../static/Web%20QR_files/plusone.js" type="text/javascript"></script>
+    <script src="../static/Web%20QR_files/webqr.js" type="text/javascript"></script>-->
+
+
+    <link href="{{url_for('static', filename='exhibStyle.css')}}" rel="stylesheet" type="text/css">
+    <script src="{{url_for('static', filename='jquery.js')}}" type="text/javascript"></script>
+    <script src="{{url_for('static', filename='exhibitor.js')}}" type="text/javascript"></script>
+    <script src="{{url_for('static', filename='bower_components/qcode-decoder/build/qcode-decoder.min.js')}}" type="text/javascript"></script>
+    <script src="{{url_for('static', filename='Web QR_files/llqrcode.js')}}" type="text/javascript"></script>
+    <script src="{{url_for('static', filename='Web QR_files/plusone.js')}}" type="text/javascript"></script>
+
+</head>
+
+<body>
+    <header>
+        <h1>Lägg till kontakt</h1>
+        <a href="/logout/"><button id="logOut">Logga ut</button></a>
+    </header>
+<main>
+
+</main>
+
+<script>
+    var isSafari = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    if(isSafari === true){
+        $('main').html('<section  class="QR">\
+            <form autocomplete="off" id="searchSection">\
+                <input id="searchField" type="text" name="search" placeholder="sök...">\
+            </form>\
+            <div id="result" class="alert">\
+                <ul>\
+                </ul>\
+                <p id="alertMessage">Skanna QR eller ange ID</p>\
+            </div>\
+            <div class="imageHolder">\
+                <img alt="" src="#" id="qr-image">\
+            </div>\
+            <input type="file" capture="camera" accept="image/*;capture=camera" id="cameraInput" class="inputFile" name="cameraInput">\
+            <label for="cameraInput" class="camButton">Öppna kameran</label>\
+        </section>\
+        <section id="contacts">\
+             <figure>\
+                <a href="/utstallare/qr">\
+                    <svg class="addIcon" width="31px" height="31px" viewBox="0 0 31 31" version="1.1" xmlns="http://www.w3.org/2000/svg"\
+                       xmlns:xlink="http://www.w3.org/1999/xlink">\
+                        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                            <g id="iPhone_added" transform="translate(-68.000000, -613.000000)" fill="#21D3A5">\
+                                <path d="M89.3125,629.46875 L84.46875,629.46875 L84.46875,634.3125 C84.46875,634.845312 84.0357188,635.28125 \   83.5,635.28125 C82.9642812,635.28125 82.53125,634.845312 82.53125,634.3125 L82.53125,629.46875 L77.6875,629.46875 C77.1517812,629.46875\ 76.71875,629.032812 76.71875,628.5 C76.71875,627.967188 77.1517812,627.53125 77.6875,627.53125 L82.53125,627.53125 L82.53125,622.6875\ C82.53125,622.154688 82.9642812,621.71875 83.5,621.71875 C84.0357188,621.71875 84.46875,622.154688 84.46875,622.6875 L84.46875,627.53125\ L89.3125,627.53125 C89.8482188,627.53125 90.28125,627.967188 90.28125,628.5 C90.28125,629.032812 89.8482188,629.46875 89.3125,629.46875\ L89.3125,629.46875 Z M83.5,613 C74.9391563,613 68,619.93625 68,628.5 C68,637.06375 74.9391563,644 83.5,644 C92.0608437,644 99,637.06375 99,628.5  C99,619.93625 92.0608437,613 83.5,613 L83.5,613 Z" id="Fill-25"></path> \
+                            </g> \
+                        </g>\
+                    </svg>\
+                    <figcaption>Lägg till kontakt</figcaption>\
+                </a>\
+            </figure>\
+            <figure>\
+                <a href="/utstallare">\
+                    <svg class="addIcon" width="31px" height="31px" viewBox="0 0 31 31" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> \
+                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                        <g id="iPhone_added" transform="translate(-257.000000, -613.000000)">\
+                            <g id="Group-2" transform="translate(257.000000, 613.000000)">\
+                                <g id="Group">\
+                                    <circle id="Oval-5" fill="#444" cx="15.5" cy="15.5" r="15.5"></circle>\
+                                    <path d="M24.9097241,21.0580949 C25.6371537,22.267194 25.5777717,24.4125 25.5777717,24.4125 L5.42777171,24.4125 C5.42777171,24.4125 5.32974315,22.0888024 6.29964932,20.8797033 C6.84522155,20.3643495 8.56276373,18.6002541 11.4926886,18.1641856 C14.4024072,17.7479384 13.5133265,14.5765309 13.6143584,14.6161735 C13.7153903,14.6756373 13.594152,13.9422494 13.594152,13.9422494 C13.594152,13.9422494 11.4724823,11.9402984 11.4926886,10.1365604 C11.5331014,8.31300107 11.4926886,7.38140011 11.4926886,7.38140011 C11.4926886,7.38140011 11.8361971,3.1 14.8267411,3.1 L16.5038706,3.89285187 C19.1913189,3.89285187 19.6358593,7.38140011 19.6358593,7.38140011 L19.6358593,10.3942372 C19.6358593,10.3942372 19.2923508,12.9511845 17.6152214,13.8827855 C17.6152214,13.8827855 17.4939831,14.6161735 17.595015,14.5567096 C17.6960469,14.517067 16.7261407,17.7479384 19.6358593,18.1840069 C22.5657842,18.6002541 24.5258029,20.4039921 24.9097241,21.0580949 Z" id="Shape" fill="#FFFFFF"></path>\
+                                    <path d="M15.5,29.45 C21.0642689,29.45 25.575,26.5931241 25.575,24.025 C25.575,21.4568759 21.0642689,18.6 15.5,18.6 C9.93573115,18.6 5.425,21.4568759 5.425,24.025 C5.425,26.5931241 9.93573115,29.45 15.5,29.45 Z" id="Oval-7" fill="#FFFFFF"></path>\
+                                </g>\
+                            </g>\
+                        </g>\
+                    </g>\
+                </svg>\
+                    <figcaption>Kontakter</figcaption>\
+                </a>\
+            </figure>\
+        </section>\
+        ');
+            document.querySelector("#cameraInput").addEventListener("change", function(event) {
+                var output = document.querySelector("#qr-image");
+                output.src = URL.createObjectURL(event.target.files[0]);
+                output.style.display = "block";
+                var qr = new QCodeDecoder();
+                qr.decodeFromImage(document.querySelector("#qr-image"), function (err, result) {
+                    var resultElement = document.querySelector("#result")
+                    if(err){
+                        $('#alertMessage').text(function(){
+                            return 'Kunde inte läsa QR-koden, försök igen'
+                        })
+                    }
+                    else{
+                        AjaxQR(result);
+                    }
+                });
+            });
+    }
+    else if(isSafari === false){
+        $('main').html('<section id="mainbody" class="QR">\
+            <form autocomplete="off" id="searchSection">\
+                <input id="searchField" type="text" name="search" placeholder="sök...">\
+            </form>\
+            <div id="result">\
+                <ul>\
+                </ul>\
+                <p id="alertMessage">Skanna QR eller ange ID</p>\
+            </div>\
+            <div id="outdiv">\
+    		    <video autoplay="" id="v" src="blob:https://webqr.com/b48c45b8-f813-465e-928f-8cd27d82768c"></video>\
+            </div>\
+            <label class="selector camButton" id="webcamimg" onclick="load()">Start Scanner</label>\
+            <label class="selector" id="qrimg" onclick="setimg()">Stop Scan</label>\
+        </section>\
+        <canvas id="qr-canvas"></canvas>\
+        <section id="contacts">\
+            <figure>\
+                <a href="/utstallare/qr">\
+                    <svg class="addIcon" width="31px" height="31px" viewBox="0 0 31 31" version="1.1" xmlns="http://www.w3.org/2000/svg"\
+                       xmlns:xlink="http://www.w3.org/1999/xlink">\
+                        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                            <g id="iPhone_added" transform="translate(-68.000000, -613.000000)" fill="#21D3A5">\
+                                <path d="M89.3125,629.46875 L84.46875,629.46875 L84.46875,634.3125 C84.46875,634.845312 84.0357188,635.28125 \  83.5,635.28125 C82.9642812,635.28125 82.53125,634.845312 82.53125,634.3125 L82.53125,629.46875 L77.6875,629.46875 C77.1517812,629.46875 76.71875,629.032812 76.71875,628.5 C76.71875,627.967188 77.1517812,627.53125 77.6875,627.53125 L82.53125,627.53125 L82.53125,622.6875 C82.53125,622.154688 82.9642812,621.71875 83.5,621.71875 C84.0357188,621.71875 84.46875,622.154688 84.46875,622.6875 L84.46875,627.53125 L89.3125,627.53125 C89.8482188,627.53125 90.28125,627.967188 90.28125,628.5 C90.28125,629.032812 89.8482188,629.46875 89.3125,629.46875 L89.3125,629.46875 Z M83.5,613 C74.9391563,613 68,619.93625 68,628.5 C68,637.06375 74.9391563,644 83.5,644 C92.0608437,644 99,637.06375 99,628.5  C99,619.93625 92.0608437,613 83.5,613 L83.5,613 Z" id="Fill-25"></path> \
+                            </g> \
+                        </g>\
+                    </svg>\
+                    <figcaption>Lägg till kontakt</figcaption>\
+                </a>\
+            </figure>\
+            <figure>\
+                <a href="/utstallare">\
+                    <svg class="addIcon" width="31px" height="31px" viewBox="0 0 31 31" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> \
+                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                        <g id="iPhone_added" transform="translate(-257.000000, -613.000000)">\
+                            <g id="Group-2" transform="translate(257.000000, 613.000000)">\
+                                <g id="Group">\
+                                    <circle id="Oval-5" fill="#444" cx="15.5" cy="15.5" r="15.5"></circle>\
+                                    <path d="M24.9097241,21.0580949 C25.6371537,22.267194 25.5777717,24.4125 25.5777717,24.4125 L5.42777171,24.4125 C5.42777171,24.4125 5.32974315,22.0888024 6.29964932,20.8797033 C6.84522155,20.3643495 8.56276373,18.6002541 11.4926886,18.1641856 C14.4024072,17.7479384 13.5133265,14.5765309 13.6143584,14.6161735 C13.7153903,14.6756373 13.594152,13.9422494 13.594152,13.9422494 C13.594152,13.9422494 11.4724823,11.9402984 11.4926886,10.1365604 C11.5331014,8.31300107 11.4926886,7.38140011 11.4926886,7.38140011 C11.4926886,7.38140011 11.8361971,3.1 14.8267411,3.1 L16.5038706,3.89285187 C19.1913189,3.89285187 19.6358593,7.38140011 19.6358593,7.38140011 L19.6358593,10.3942372 C19.6358593,10.3942372 19.2923508,12.9511845 17.6152214,13.8827855 C17.6152214,13.8827855 17.4939831,14.6161735 17.595015,14.5567096 C17.6960469,14.517067 16.7261407,17.7479384 19.6358593,18.1840069 C22.5657842,18.6002541 24.5258029,20.4039921 24.9097241,21.0580949 Z" id="Shape" fill="#FFFFFF"></path>\
+                                    <path d="M15.5,29.45 C21.0642689,29.45 25.575,26.5931241 25.575,24.025 C25.575,21.4568759 21.0642689,18.6 15.5,18.6 C9.93573115,18.6 5.425,21.4568759 5.425,24.025 C5.425,26.5931241 9.93573115,29.45 15.5,29.45 Z" id="Oval-7" fill="#FFFFFF"></path>\
+                                </g>\
+                            </g>\
+                        </g>\
+                    </g>\
+                </svg>\
+                    <figcaption>Kontakter</figcaption>\
+                </a>\
+            </figure>\
+        </section>\
+        ');
+    };
+</script>
+</body>
+</html>

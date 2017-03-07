@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Läromedelsmässan 2017 </title>
+    <link href="{{url_for('static', filename='style.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{url_for('static', filename='styleanimations.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{url_for('static', filename='print.css')}}" media="print" rel="stylesheet" type="text/css">
+
+    <script src="{{url_for('static', filename='jquery.js')}}" type="text/javascript"></script>
+    <script src="{{url_for('static', filename='register.js')}}" type="text/javascript"></script>
+    <script src="{{url_for('static', filename='jqueryanimations.js')}}" type="text/javascript"></script>
+</head>
+
+<body>
+    <header>
+        <!--<h1> Anmälan läromedelsmässa 2017</h1>-->
+    </header>
+
+    <section>
+        <div id="thanksBox">
+            <div id="logoBackground">
+                <img src="{{url_for('static', filename='img/logotyp.png')}}" alt="Läromässan 2017 logotyp" id="logo">
+            </div>
+            <hr id="thanksHr">
+            <div id="thanksInfo">
+                <h1>Tack för din anmälan {{ name }}!</h1>
+
+                <img src="{{url_for('static', filename='img/qr/'+qrUrl)}}"  alt="qr kod" id="qrCode">
+                <h3>{{front_end_id}}</h3>
+                <p id="rightClick">(Högerklicka på bilden för att spara)</p>
+                <p id="hold">(Håll på bilden för att spara)</p>
+
+                <p id="justifyText">Här är din QR-kod för mässan. Visa den för att dela dina kontaktuppgifter med utställare som du vill ha kontakt med och för fika i pausen. Spara ner eller skriv ut den inför mässan. Du får även en bekräftelse på mailen. Vi ses där!</p>
+
+                <button class="qrButton" id="printbutton">Skriv ut QR-kod</button>
+                <!--<p id="obs"> OBS! Har fått du inte fått bekräftelsen på mailen, kontrollera att den inte har hamnat i skräppost!</p>-->
+
+                <a href="http://www.avmediaskane.se">Tillbaka till avmediaskane.se</a>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
