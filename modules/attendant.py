@@ -4,7 +4,7 @@ import qrcode
 import random, string
 import os.path
 from PIL import Image
-from modules.mailmaster import Mailmaster
+
 
 class Attendant(Base):
 
@@ -138,7 +138,7 @@ class Attendant(Base):
             'qr':'https://www.massa.avmediaskane.se/static/img/qr/'+self.qr,
             'link': 'https://www.massa.avmediaskane.se/thanks/'+str(self.front_end_id)+'/'+str(self.id)
         }
-        Mailmaster.send(self.email, message)
+
 
 
 
@@ -214,7 +214,7 @@ class Attendant(Base):
         }
         session.commit()
         session.close()
-        Mailmaster.send(contact_info['email'], message)
+
         return True, return_data
 
     @classmethod

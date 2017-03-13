@@ -40,95 +40,9 @@ def admin_requierd(myFunc):
             return render_template("fel.html", error_list = ["403. Du har inte behörighet!"])
     return wrapper
 
-@app.route('/')
-def index():
-    return render_template("start.html")
 
-@app.route('/anmalan')
-def welcome():
-    return render_template('index.html')
 
-@app.route('/email_check', methods=["POST"])
-def check_email():
-    email = request.form['mejl']
-    email = json.loads(email)
-    response = {}
-    response['email'] = Attendant.is_attending(email)
-    return json.dumps(response)
 
-def create_new_attendant():
-    contact_info = {}
-    contact_info['first_name'] = request.form.get('firstName')
-    contact_info['surname'] = request.form.get('surName')
-    contact_info['email'] = request.form.get('email')
-    contact_info['month'] = request.form.get('month')
-    contact_info['day'] = request.form.get('day')
-    contact_info['school'] = request.form.get('whichSchool')
-    contact_info['commune'] = request.form.get('municipality')
-    contact_info['profession'] = request.form.get('profession')
-    list_of_subjects = request.form.getlist('subjects')
-    contact_info['list_subjects'] = list_of_subjects
-    list_of_teaching_years = request.form.getlist('years')
-    contact_info['list_years'] = list_of_teaching_years
-
-    response = request.form.get('g-recaptcha-response')
-    remote_ip = request.remote_addr
-
-    if recaptcha.verify(response, remote_ip):
-        created, returned_data = Attendant.create(contact_info)
-    else:
-        created = False
-        returned_data = {'recaptcha': False}
-
-    return created, returned_data
-
-@app.route('/new_attendant/',methods=['POST'])
-def create_attendant_noJs():
-    created, returned_data = create_new_attendant()
-    if created:
-        return redirect('/thanks/'+str(returned_data['front_end_id'])+'/'+str(returned_data['id']))
-    else:
-        errors = []
-        for key, value in returned_data.items():
-            if value == False:
-                if key == "exists":
-                    errors.append("Mailadressen du har angett finns redan anmäld.")
-                elif key == "first_name" or key == "surname":
-                    errors.append("Du måste fylla i alla fält markerade med * i formuläret.")
-                elif key == "email":
-                    errors.append("Du måste ange en giltig mailadress.")
-                else:
-                    errors.append("Du måste ange vilken månad och dag du är född.")
-        return render_template("fel.html", error_list=set(errors))
-        #return json.dumps(returned_data)
-
-@app.route('/attendant/',methods=['POST'])
-def create_attendant():
-    created, returned_data = create_new_attendant()
-
-    if created:
-        return json.dumps({'attend':'True', 'url':'/thanks/'+str(returned_data['front_end_id'])+'/'+str(returned_data['id'])})
-    else:
-        return json.dumps({'attend':'False','errors':returned_data})
-
-@app.route('/attendant/<id>', methods=['DELETE'])
-@login_required
-@admin_requierd
-def delte_attendant(id):
-    attendant = Attendant.get_user(id)
-    if attendant:
-        attendant.delete()
-        return json.dumps(True)
-    else:
-        return json.dumps(False)
-
-@app.route('/thanks/<front_end_id>/<user_id>', methods=['GET'])
-def thanks(front_end_id, user_id):
-    attendant = Attendant.get_user_multi(front_end_id, user_id)
-    if attendant:
-        return render_template('tack.html', name=attendant.first_name, qrUrl=attendant.qr, front_end_id=attendant.front_end_id)
-    else:
-        return abort(404)
 
 @app.route('/utstallare/', methods=['GET'])
 @login_required
@@ -180,16 +94,7 @@ def connect_by_frontend_id(front_end_id):
     else:
         return json.dumps(attendants)
 
-@app.route('/attendant/<id>/sendemail', methods=['POST'])
-@login_required
-@admin_requierd
-def attendant_send_email(id):
-    attendant = Attendant.get_user(id)
-    if attendant:
-        attendant.resend_email()
-        return json.dumps(True)
-    else:
-        return json.dumps(False)
+
 
 @app.route('/connection/<connection_id>', methods=['POST'])
 @login_required
@@ -356,39 +261,24 @@ def log_in():
     else:
         return json.dumps({'logged_in': False})
 
-@app.route('/login/', methods=['GET', 'POST'])
+@app.route('/login/', methods=['POST'])
 def log_in_user():
     ''' Call log_in user and return template depending on user level '''
-
-    if request.method=='POST':
-        next_parameter = request.args.get('next')
-        response = log_in()
-        response = json.loads(response)
-        if response['logged_in'] == True:
-            url = request.url
-            if not is_safe_url(next_parameter):
-                return abort(400)
-
-            if current_user.get_auth_level() == 1: # Exhibitor user
-                if next_parameter is None:
-                    return redirect('/utstallare/')
-                else:
-                    return redirect(url_for(next_parameter))
-            else: # Admin user
-                if next_parameter is None:
-                    return render_template('admin.html')
-                else:
-                    return redirect(url_for(next_parameter))
+    email = request.form.get('username')
+    user_psw = request.form.get('password')
+    hashed = User.hash_password(user_psw)
+    user = User.get_user(email)
+    if user:
+        if user.get_password() == hashed:
+            return json.dumps({'logged_in':True, 'id':user.id, 'key':user.generate_key()})
         else:
-            return redirect('/administrator/addexhibitor')
+            return json.dumps({'logged_in':False})
     else:
-        authenticated = current_user.is_authenticated
-        if authenticated:
-            if current_user.auth_level == 1:
-                return render_template("utstallare_inloggad.html")
-            else:
-                return render_template("admin.html")
-        return render_template('inloggning.html')
+        return json.dumps({'logged_in':False})
+
+
+
+
 
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
@@ -554,4 +444,4 @@ def load_user(session_token):
     return user
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0')

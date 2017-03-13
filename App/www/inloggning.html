@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title> Läromedelsmässan 2017 </title>
+    <link href="css/styleinloggning.css" rel="stylesheet" type="text/css">
+    <link href="css/styleanimations.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <header>
+
+    </header>
+
+    <section>
+      <figure><img alt='AV media logotyp' id='logo' src='img/logotyp.png'></figure>
+
+            <article id="aboutYou">
+                    <div id="container">
+                      <h3>Logga in</h3>
+                      <form action="/login/" method="post" id ="logIn">
+                        <label for="username">Email:</label>
+                        <input type="text" id="username" name="username" placeholder="Email">
+                        <p id="errorMessage1">Du har inte fyllt i en korrekt emailadress</p>
+                        <label for="password">Lösenord:</label>
+                        <input type="password" id="password" name="password" placeholder="Lösenord">
+                        <p id="errorMessage2">Fyll i detta fält</p>
+                        <p id="errorMessage3">Fel inloggningsuppgifter.</p>
+                        <!--<input type="checkbox" name="remember"><label for="checkbox">Håll mig inloggad</label>-->
+                        <input type="submit" value="Login">
+                        <a href="/glomt_losenord/" id="forgottenID">Glömt lösenord?</a>
+                      </form>
+                    </div>
+                </article>
+      </div>
+      </div>
+    </section>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+		<!-- Länkar in vår egna JavaScript-fil -->
+        <script src="js/inloggning.js"></script>
+        <script type="text/javascript" src="cordova.js"></script>
+</body>
+</html>

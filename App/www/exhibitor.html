@@ -1,0 +1,46 @@
+    <section  class="QR">
+        <form autocomplete="off" id="searchSection">
+            <input id="searchField" type="text" name="search" placeholder="sök...">
+        </form>
+        <div id="result" class="alert">Ta en bild genom knappen ovan</div>
+        <div class="imageHolder">
+            <img src="#" id="qr-image">
+        </div>
+
+        <input type="file" capture="camera" accept="image/*;capture=camera" id="cameraInput" class="inputFile" name="cameraInput">
+        <label for="cameraInput" class="camButton">Öppna kameran</label>
+    </section>
+
+    <section id="contacts">
+        <figure>
+            <!--<img src="../static/img/plusSign.png" class="addIcon">-->
+            <img src="{{url_for('static', filename='img/plusSign.png')}}" class="addIcon">
+            <figcaption>Lägg till kontakt</figcaption>
+        </figure>
+        <figure>
+            <!--<img src="../static/img/person_icon.png" class="addIcon">-->
+            <img src="{{url_for('static', filename='img/person_icon.png')}}" class="addIcon">
+            <figcaption>Kontakter</figcaption>
+        </figure>
+    </section>
+
+    <script>
+        document.querySelector("#cameraInput").addEventListener("change", function(event) {
+            var output = document.querySelector('#qr-image');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.style.display = "block";
+
+            var qr = new QCodeDecoder();
+            qr.decodeFromImage(document.querySelector("#qr-image"), function (err, result) {
+                var resultElement = document.querySelector("#result")
+                if(err){
+                    resultElement.setAttribute("class", "alert error");
+                    resultElement.innerHTML = "<b>Kunde inte läsa QR-kloden, försök igen</b>";
+                }else{
+                    resultElement.setAttribute("class", "alert error");
+                    resultElement.innerHTML = "QR-koden visar:<br><h2>" + result + "</h2>";
+                    GERANIMO();
+                }
+            });
+        });
+    </script>

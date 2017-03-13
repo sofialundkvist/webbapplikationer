@@ -3,7 +3,6 @@ from modules.db_connector import *
 from modules.validator import Validator
 from modules.label import Label
 from modules.connection import Connection
-from modules.mailmaster import Mailmaster
 import datetime
 import xlsxwriter
 
@@ -54,7 +53,7 @@ class Exhibitor(User):
 
     def create_excel(self):
         ''' Create excel-file of exhibitor's saved contacts and return it '''
-        workbook = xlsxwriter.Workbook('excel/kontaktuppgifter' + str(self.id) + '.xlsx') 
+        workbook = xlsxwriter.Workbook('excel/kontaktuppgifter' + str(self.id) + '.xlsx')
         worksheet = workbook.add_worksheet()
         worksheet.write('A1', 'Förnamn')
         worksheet.write('B1', 'Efternamn')
@@ -160,7 +159,6 @@ class Exhibitor(User):
         exhibitor.create_lables()
         session.expunge_all()
         session.close()
-        Mailmaster.send_other_mail(email, message, "mail_utstallare.html", "Du är registrerad")
         return True, 'Skapad'
 
     @classmethod

@@ -6,7 +6,6 @@ from os import urandom
 import hashlib
 import random, string
 import datetime
-from modules.mailmaster import Mailmaster
 
 class User(Base):
 
@@ -60,7 +59,6 @@ class User(Base):
         session.close()
         link = "https://massa.avmediaskane.se/glomt_losenord/" + url_wildcard # Ändra till absolut sökväg på servern
         message = {"link": link}
-        Mailmaster.send_other_mail(self.email, message, 'mail_password_reset.html', 'Byt lösenord')
 
     def get_auth_level(self):
         return self.auth_level
@@ -68,11 +66,25 @@ class User(Base):
     def get_email(self):
         return self.email
 
+    def get_password(self):
+        return self.password
+
     def validate_url_time(self):
         if self.url_time > datetime.datetime.now()-datetime.timedelta(minutes=60):
             return True
         else:
             return False
+
+    def generate_key(self):
+        key = str(''.join(random.choice(string.ascii_uppercase + string.digits) for i in range(16)))
+        self.set_key(key)
+        return key
+
+    def set_key(self, key):
+        session = Session()
+        session.query(User).filter_by(id = user.id).update({'session_token':key})
+        session.commit()
+        session.close()
 
     def log_out(self):
         session = Session()
@@ -100,7 +112,6 @@ class User(Base):
         pwd = 'Massa2017'
         if self.password != self.hash_password(pwd):
             pwd = 'Du har satt ett eget lösenord.'
-        Mailmaster.send_other_mail(self.email, {'password':pwd, 'email':self.email}, 'mail_utstallare.html', 'Nytt konto hos AvMedia Skåne!')
 
     @classmethod
     def is_attending(cls, email):

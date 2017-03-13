@@ -1,0 +1,8 @@
+/keys.json
+/venv/*
+/static/img/qr/*
+/session/container_file/*
+/session/container_file_lock/*
+.DS_Store
+modules/__pycache__/*.pyc
+*.pyc
