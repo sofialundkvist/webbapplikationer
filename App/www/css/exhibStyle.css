@@ -526,11 +526,13 @@ form {
 @media only screen and (min-width : 375px) and (max-width : 667px){
     header > h1 {
         font-size: 5vw;
+        margin: 3%;
     }
 
     #logOut{
         top: 0.9em;
         font-size: 14px;
+        margin: 3%;
     }
 
     #addInfo {
