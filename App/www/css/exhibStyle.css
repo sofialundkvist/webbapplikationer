@@ -304,8 +304,36 @@ a:hover #Fill-25{
     color:#222222;
 }
 
+/*
+#handleEveryLabel {
+    width: 50%;
+    text-align: center;
+    padding: 10px;
+    margin: 0 auto;
+    border-radius: 4px;
+    position: relative;
+    background-color: #21D3A5;
+    color: white;
+    cursor: pointer;
+    display: block;
+}
+*/
+
+#handleEveryLabel{
+    width:50%;
+    margin:0 auto;
+    text-align: center;
+    padding:10px;
+    border-radius: 4px;
+    background-color:#21D3A5;
+    color:white;
+    display:inline-block;
+    position:relative;
+}
+
 #handleEveryLabel:hover{
     cursor:pointer;
+    background-color: #1fc89c;
 }
 
 #plus{
@@ -414,21 +442,42 @@ form {
     display: inline-block;
 }
 
-#handleEveryLabel {
-    width: 50%;
-    text-align: center;
-    padding: 10px;
-    margin: 0 auto;
-    border-radius: 4px;
-    position: relative;
-    background-color: #21D3A5;
-    color: white;
-    cursor: pointer;
-    display: block;
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 10000;
 }
 
-#handleEveryLabel:hover {
-    background-color: #1fc89c;
+.changeInfo{
+    min-width: 40px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    float: right;
+    min-height: 10px;
+    padding: 6px;
+    font-size: 14px;
+    border-radius: 3px;
+    background-color: #21D3A5;
+    position:relative;
+    bottom:20px;
+}
+
+.showMe > p{
+    width:65%;
+    font-style: italic;
+}
+
+#content > a{
+    width:36%;
+}
+
+.visitorName{
+    width:60%;
 }
 
 @media only screen and (min-width : 320px) and (max-width : 568px){

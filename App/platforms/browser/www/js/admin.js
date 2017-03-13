@@ -13,33 +13,12 @@ function getItems() {
     });
  };
 
-//Lägger till varje hämtad utställare/besökare i en lista ordnad efter name
-/*function addItem(data) {
 
-    dataList = []
-    dataList = data;
 
-    function compare(a,b) {
-          if (a.name < b.name)
-            return -1;
-          if (a.name > b.name)
-            return 1;
-          return 0;
-    }
-
-    dataList.sort(compare);
-
-    console.log(dataList);
-
-    for (var i = 0; i < dataList.length; i++) {
-     $('#exhibitorList').append( '<li>' + '<p class="dataId">' +  dataList[i].id + '</p>' + '<p>' + dataList[i].name + '</p>' + '<p>' + dataList[i].email + '</p>' + '<img title="Skicka mail" class="listButton" src="../static/img/mail_button.png" onclick=confirmEmail(this)>' + '<img title="Ta bort utställare" class="listButton" src="../static/img/delete_button.png" onclick=confirmDelete(this)>' + '</li>' );
-    }
-}*/
-
-//Lägger till varje besökare i en lista ordnad efter name
 function addItem(data){
 
     dataList = data['connections'];
+    myLabels = data['labels'];
 
     function compare(a,b) {
           if (a.attendant.first_name < b.attendant.first_name)
@@ -48,7 +27,6 @@ function addItem(data){
             return 1;
           return 0;
     }
-    console.log(data)
     dataList.sort(compare);
 
     //console.log(dataList[0].attendant.email);
@@ -70,12 +48,15 @@ function addItem(data){
 
 
         $('#VisitorInfo').append(
-            '<li onclick=toggleDisplay(this) data-tags="'+labels+'">\
-                 <p class="dataId">' +  dataList[i].attendant.id + '</p>\
-                 <p>' + dataList[i].attendant.first_name + ' ' + dataList[i].attendant.surname + '</p>\
-                 <p style="font-size:13px;">Taggar: '+ labelText +'</p>\
+            '<li data-tags="'+labels+'" data-frontEnd-id="' +dataList[i].attendant.front_end_id+'" \
+            data-id="'+dataList[i].attendant.id+'">\
+                <p class="dataId">' +  dataList[i].attendant.id + '</p>\
+                <p class="visitorName" onclick="toggleDisplay(this)">' + dataList[i].attendant.first_name + ' ' + dataList[i].attendant.surname +'</p>\
+                <p style="font-size:13px;">Taggar: '+ labelText +'</p>\
+                <div class="changeInfo">Redigera Info</div>\
+                <section class="overlay"></section>\
                 <div class="showMe">\
-                    <p>' + dataList[i].comment + '</p>\
+                    <p>"' + dataList[i].comment + '"</p>\
                     <table>\
                     <thead>\
                           <tr>\
@@ -110,7 +91,67 @@ function addItem(data){
             </li>'
         );
     };
+    $('.changeInfo').hide();
+    $('.overlay').hide();
+    $('.changeInfo').click(function(event){
+        var thisParent = event.target.parentNode;
+        var frontendID = $(thisParent).attr('data-frontEnd-id');
+        var backendID = $(thisParent).attr('data-id');
+        for (k = 0; k < dataList.length; k++){
+            if (dataList[k].attendant.id == backendID){
+                editInfo(dataList[k], myLabels, thisParent);
+            }
+        }
+    });
 };
+
+
+function editInfo(connections, myLabels, parentObj, clicked_button){
+    var myVar = $(parentObj).find('.overlay');
+    $(myVar).html('<div id="close-overlay">X</div>\
+            <div id="handleEveryLabel" class="openHandleTags"><i class="fa fa-tags" aria-hidden="true"></i></div>\
+            <section id="infoBox">\
+                <div id="edithLabels">\
+                    <ul id="completeLabelList">\
+                        <li class="tags" id="addTagBtn"><div id="addLabel">Ny Tagg<div id="plus">+</div></div></li>\
+                    </ul>\
+                    <div id="addLabelForm"></div>\
+                </div>\
+                <form id="connectionForm">\
+                    <ul id="tags">\
+                    </ul>\
+                    <textarea id="comment">' + connections.comment + '</textarea>\
+                    <div id="saveInfoBtn">Spara</div>\
+                </form>\
+            </section>')
+
+    $('#close-overlay').click(function(){
+        $(myVar).html('')
+        $(myVar).slideToggle(300);
+    })
+    $(myVar).slideToggle(300);
+
+    hideLabelMenu();
+    show_hide_info();
+    $('#handleEveryLabel').on('click',function(){
+        show_hide_labels();
+    });
+
+    var myLabels = $.parseJSON(myLabels);
+    connectionLabels = doLabelList(connections.labels)
+    labelsOnConnection(myLabels, connectionLabels);
+
+    $('#saveInfoBtn').click(function(){
+        saveInfo(connections.id);
+    });
+
+    $('#connectionForm').find('#tags').on('click', '.tags', function(){
+        chooseLabel($(this));
+    });
+    addLable.eventHandlers();
+    deleteLabel.eventHandler();
+    return;
+}
 
 //Visar en bekräftelse på att användaren vill ta bort utställare/besökare
 function confirmDelete() {
@@ -270,6 +311,12 @@ var label = (function(){
                 $(this).show();
             }
             else{
+                try{
+                    var contactLabels = $.makeArray($(this).data('tags').split(','));
+                }
+                catch(err){
+                    var contactLabels = $.makeArray($(this).data('tags'));
+                }
                 var contactLabels = $.makeArray($(this).data('tags'));
                 var display = []
                 var length = contactLabels.length

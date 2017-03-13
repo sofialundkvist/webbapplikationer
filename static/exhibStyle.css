@@ -218,16 +218,6 @@ video{
     margin-top: 0%;
 }
 
-#connectionDone{
-    width:45vw;
-    height:45vw;
-    margin: auto;
-    background: url('../static/img/scan_ok_icon.png') center center no-repeat;
-    -webkit-background-size:cover;
-    -moz-background-size:cover;
-    -o-background-size:cover;
-    background-size:cover;
-}
 
 .extraInfo{
     width:80%;
@@ -301,8 +291,36 @@ a:hover #Fill-25{
     color:#222222;
 }
 
+/*
+#handleEveryLabel {
+    width: 50%;
+    text-align: center;
+    padding: 10px;
+    margin: 0 auto;
+    border-radius: 4px;
+    position: relative;
+    background-color: #21D3A5;
+    color: white;
+    cursor: pointer;
+    display: block;
+}
+*/
+
+#handleEveryLabel{
+    width:50%;
+    margin:0 auto;
+    text-align: center;
+    padding:10px;
+    border-radius: 4px;
+    background-color:#21D3A5;
+    color:white;
+    display:inline-block;
+    position:relative;
+}
+
 #handleEveryLabel:hover{
     cursor:pointer;
+    background-color: #1fc89c;
 }
 
 #plus{
@@ -411,21 +429,42 @@ form {
     display: inline-block;
 }
 
-#handleEveryLabel {
-    width: 50%;
-    text-align: center;
-    padding: 10px;
-    margin: 0 auto;
-    border-radius: 4px;
-    position: relative;
-    background-color: #21D3A5;
-    color: white;
-    cursor: pointer;
-    display: block;
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 10000;
 }
 
-#handleEveryLabel:hover {
-    background-color: #1fc89c;
+.changeInfo{
+    min-width: 40px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    float: right;
+    min-height: 10px;
+    padding: 6px;
+    font-size: 14px;
+    border-radius: 3px;
+    background-color: #21D3A5;
+    position:relative;
+    bottom:20px;
+}
+
+.showMe > p{
+    width:65%;
+    font-style: italic;
+}
+
+#content > a{
+    width:36%;
+}
+
+.visitorName{
+    width:60%;
 }
 
 @media only screen and (min-width : 320px) and (max-width : 568px){
@@ -485,7 +524,7 @@ form {
     #addInfo {
         width: 50%;
     }
-    
+
     #handleEveryLabel {
         width: 50%;
     }
@@ -507,11 +546,11 @@ form {
         width: 84%;
         padding-left: 1%;
     }
-    
+
       #downloadContacts {
         float: none;
     }
-    
+
     h3 {
         font-size: 1.2em;
     }
@@ -565,7 +604,7 @@ form {
     #addInfo {
         width: 50%;
     }
-    
+
     #handleEveryLabel {
         width: 50%;
     }
@@ -588,7 +627,7 @@ form {
         width: 84%;
         padding-left: 1%;
     }
-    
+
     #downloadContacts {
         float: none;
     }
@@ -609,7 +648,7 @@ form {
     #addInfo {
         width: 40%;
     }
-    
+
     #handleEveryLabel {
         width: 40%;
     }
@@ -659,7 +698,7 @@ form {
     #addInfo {
         width: 40%;
     }
-    
+
     #handleEveryLabel {
         width: 40%;
     }
@@ -721,11 +760,11 @@ form {
     input {
         font-size: 14px;
     }
-    
+
     ol > li {
         width: 98%;
     }
-    
+
     #handleEveryLabel {
     width: 10%;
     }
