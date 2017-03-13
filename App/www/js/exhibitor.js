@@ -16,7 +16,7 @@ function saveConnectionInfo(ConnectionInfo, ConnectionId){
     $.ajax({
         type: 'POST',
         data: ConnectionInfo,
-        url:'/connection/'+ ConnectionId,
+        url:'https://doltishkey.pythonanywhere.com/connection/'+ ConnectionId,
         traditional: true,
         success: function(response){
             json = $.parseJSON(response);
@@ -38,7 +38,7 @@ function AjaxFrontEndId(id){
     $.ajax({
         headers: User.getInfo(),
         type: 'GET',
-        url: 'http://10.2.1.4:5000/attendant/' + id + '/',
+        url: 'https://doltishkey.pythonanywhere.com/attendant/' + id + '/',
         success: function(response){
             var json = $.parseJSON(response);
             if ( json !== false){
@@ -51,7 +51,7 @@ function AjaxFrontEndId(id){
 
                 $('#result ul li').click(function(){
                     /* För LIVE-VERSION
-                    var theURL = 'https://massa.avmediaskane.se/attendant/' + $(this).attr('data-frontendid') + '/' + $(this).attr('data-userid');
+                    var theURL = 'https://doltishkey.pythonanywhere.com/attendant/' + $(this).attr('data-frontendid') + '/' + $(this).attr('data-userid');
                     */
                     var theURL = '/attendant/' + $(this).attr('data-frontendid') + '/' + $(this).attr('data-userid');
                     AjaxQR(theURL)
@@ -209,8 +209,8 @@ function AjaxQR(x){
                 <section id="contacts">\
                      <figure>\
                         <a href="/utstallare/qr">\
-                            <svg class="addIcon" width="31px" height="31px" viewBox="0 0 31 31" version="1.1" xmlns="http://www.w3.org/2000/svg"\
-                               xmlns:xlink="http://www.w3.org/1999/xlink">\
+                            <svg class="addIcon" width="31px" height="31px" viewBox="0 0 31 31" version="1.1" xmlns="https://www.w3.org/2000/svg"\
+                               xmlns:xlink="https://www.w3.org/1999/xlink">\
                                 <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
                                     <g id="iPhone_added" transform="translate(-68.000000, -613.000000)" fill="#21D3A5">\
                                         <path d="M89.3125,629.46875 L84.46875,629.46875 L84.46875,634.3125 C84.46875,634.845312 84.0357188,635.28125 \   83.5,635.28125 C82.9642812,635.28125 82.53125,634.845312 82.53125,634.3125 L82.53125,629.46875 L77.6875,629.46875 C77.1517812,629.46875\ 76.71875,629.032812 76.71875,628.5 C76.71875,627.967188 77.1517812,627.53125 77.6875,627.53125 L82.53125,627.53125 L82.53125,622.6875\ C82.53125,622.154688 82.9642812,621.71875 83.5,621.71875 C84.0357188,621.71875 84.46875,622.154688 84.46875,622.6875 L84.46875,627.53125\ L89.3125,627.53125 C89.8482188,627.53125 90.28125,627.967188 90.28125,628.5 C90.28125,629.032812 89.8482188,629.46875 89.3125,629.46875\ L89.3125,629.46875 Z M83.5,613 C74.9391563,613 68,619.93625 68,628.5 C68,637.06375 74.9391563,644 83.5,644 C92.0608437,644 99,637.06375 99,628.5  C99,619.93625 92.0608437,613 83.5,613 L83.5,613 Z" id="Fill-25"></path> \
@@ -222,7 +222,7 @@ function AjaxQR(x){
                     </figure>\
                     <figure>\
                         <a href="/utstallare">\
-                            <svg class="addIcon" width="31px" height="31px" viewBox="0 0 31 31" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> \
+                            <svg class="addIcon" width="31px" height="31px" viewBox="0 0 31 31" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"> \
                             <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
                                 <g id="iPhone_added" transform="translate(-257.000000, -613.000000)">\
                                     <g id="Group-2" transform="translate(257.000000, 613.000000)">\
@@ -358,7 +358,7 @@ var addLable = (function(){
 
     var sendAjax = function(form){
         $.ajax({
-            url: '/label/',
+            url: 'https://doltishkey.pythonanywhere.com/label/',
             type: 'POST',
             data:$(form).serialize(),
             dataType: 'JSON',
@@ -401,7 +401,7 @@ var deleteLabel = (function(){
     var sendAjax = function(element){
         id = element.data('id')
         $.ajax({
-            url: '/label/'+id,
+            url: 'https://doltishkey.pythonanywhere.com/label/'+id,
             type: 'DELETE',
             dataType: 'JSON',
             success: function(response) {

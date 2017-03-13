@@ -20,7 +20,7 @@ $("#logIn").submit(function(e){
   }
   console.log('Körs inlogg')
   $.ajax({
-      url: "http://10.2.1.4:5000/login/",
+      url: "https://doltishkey.pythonanywhere.com/login/",
       type: 'POST',
       data:$("form").serialize(),
       dataType: 'JSON',
