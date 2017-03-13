@@ -59,11 +59,14 @@ header{
     text-align: center;
     padding:4% 3.5%;
     margin-top:3%;
+    margin-bottom:3%;
     border-radius: 4px;
     /*position: relative;*/
     position: absolute;
     left: 7%;
     bottom: 15%;
+    background-color: #21D3A5;
+    cursor: pointer;
 }
 
 .imageHolder{
@@ -485,7 +488,7 @@ form {
     #addInfo {
         width: 50%;
     }
-    
+
     #handleEveryLabel {
         width: 50%;
     }
@@ -507,11 +510,11 @@ form {
         width: 84%;
         padding-left: 1%;
     }
-    
+
       #downloadContacts {
         float: none;
     }
-    
+
     h3 {
         font-size: 1.2em;
     }
@@ -523,11 +526,13 @@ form {
 @media only screen and (min-width : 375px) and (max-width : 667px){
     header > h1 {
         font-size: 5vw;
+        margin: 3%;
     }
 
     #logOut{
         top: 0.9em;
         font-size: 14px;
+        margin: 3%;
     }
 
     #addInfo {
@@ -565,7 +570,7 @@ form {
     #addInfo {
         width: 50%;
     }
-    
+
     #handleEveryLabel {
         width: 50%;
     }
@@ -588,7 +593,7 @@ form {
         width: 84%;
         padding-left: 1%;
     }
-    
+
     #downloadContacts {
         float: none;
     }
@@ -609,7 +614,7 @@ form {
     #addInfo {
         width: 40%;
     }
-    
+
     #handleEveryLabel {
         width: 40%;
     }
@@ -633,7 +638,8 @@ form {
         padding-left: 1%;
     }
 
-    .camButton {
+    .camButt
+    on {
         bottom: 10%;
     }
 
@@ -659,7 +665,7 @@ form {
     #addInfo {
         width: 40%;
     }
-    
+
     #handleEveryLabel {
         width: 40%;
     }
@@ -721,11 +727,11 @@ form {
     input {
         font-size: 14px;
     }
-    
+
     ol > li {
         width: 98%;
     }
-    
+
     #handleEveryLabel {
     width: 10%;
     }

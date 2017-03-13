@@ -99,9 +99,11 @@ function saveConnectionInfo(ConnectionInfo, ConnectionId){
 
 
 function AjaxFrontEndId(id){
+    console.log('körAjaxFrontEndId')
     $.ajax({
+        headers: User.getInfo(),
         type: 'GET',
-        url: '/attendant/' + id + '/',
+        url: 'http://10.2.1.4:5000/attendant/' + id + '/',
         success: function(response){
             var json = $.parseJSON(response);
             if ( json !== false){
@@ -140,7 +142,9 @@ function AjaxFrontEndId(id){
 
 
 function AjaxQR(x){
+    console.log('körs')
     $.ajax({
+        headers: User.getInfo(),
         type: 'POST',
         url:x,
         success: function(response){
@@ -308,7 +312,6 @@ function validateAttendantID(input){
 
 
 function searchForAttendant(){
-
     $('#searchSection').submit(function(event){
         event.preventDefault(event)
     });
@@ -442,9 +445,57 @@ var deleteLabel = (function(){
 }());
 
 
+var User = (function(){
+
+    getInfo = function(){
+        var token = $.parseJSON(localStorage.getItem("auth"))
+        var id = $.parseJSON(localStorage.getItem("id"))
+        return{'token':token, 'id':id}
+    };
+
+    return{
+        getInfo:getInfo,
+    }
+}());
+
+
 $( document ).ready(function(){
     searchForAttendant();
     addLable.eventHandlers()
     deleteLabel.eventHandler()
+    User.getInfo()
+
+    console.log('Körs!!')
+
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+
+    function onDeviceReady() {
+
+    document.getElementById('starScan').addEventListener('click', function(){
+        cordova.plugins.barcodeScanner.scan(
+              function (result) {
+                  AjaxQR(result.text);
+                  document.getElementById('alertMessage').innerHTML = result.text;
+              },
+              function (error) {
+                  //alert("Scanning failed: " + error);
+                  document.getElementById('alertMessage').innerHTML = 'Kunde inte läsa QR-koden, försök igen';
+              },
+              {
+                  preferFrontCamera : false, // iOS and Android
+                  showFlipCameraButton : false, // iOS and Android
+                  showTorchButton : true, // iOS and Android
+                  torchOn: true, // Android, launch with the torch switched on (if available)
+                  prompt : "Place a barcode inside the scan area", // Android
+                  resultDisplayDuration: 500, // Android, display scanned text for X ms. 0 suppresses it entirely, default 1500
+                  formats : "QR_CODE,PDF_417", // default: all but PDF_417 and RSS_EXPANDED
+                  orientation : "landscape", // Android only (portrait|landscape), default unset so it rotates with the device
+                  disableAnimations : true, // iOS
+                  disableSuccessBeep: false // iOS
+              }
+           );
+    });
+    }
 
 });
