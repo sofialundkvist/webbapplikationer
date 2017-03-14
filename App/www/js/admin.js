@@ -51,12 +51,12 @@ function addItem(data){
             '<li data-tags="'+labels+'" data-frontEnd-id="' +dataList[i].attendant.front_end_id+'" \
             data-id="'+dataList[i].attendant.id+'">\
                 <p class="dataId">' +  dataList[i].attendant.id + '</p>\
-                <p class="visitorName" onclick="toggleDisplay(this)">' + dataList[i].attendant.first_name + ' ' + dataList[i].attendant.surname +'</p>\
-                <p style="font-size:13px;">Taggar: '+ labelText +'</p>\
+                <p class="visitorName">' + dataList[i].attendant.first_name + ' ' + dataList[i].attendant.surname +'</p>\
                 <div class="changeInfo">Redigera Info</div>\
                 <section class="overlay"></section>\
                 <div class="showMe">\
                     <p>"' + dataList[i].comment + '"</p>\
+                    <p style="font-size:13px;">Taggar: '+ labelText +'</p>\
                     <table>\
                     <thead>\
                           <tr>\
@@ -91,6 +91,10 @@ function addItem(data){
             </li>'
         );
     };
+
+    $('.visitorName').click(function(){
+        toggleDisplay(this);
+    })
     $('.changeInfo').hide();
     $('.overlay').hide();
     $('.changeInfo').click(function(event){
@@ -109,7 +113,7 @@ function addItem(data){
 function editInfo(connections, myLabels, parentObj, clicked_button){
     var myVar = $(parentObj).find('.overlay');
     $(myVar).html('<div id="close-overlay">X</div>\
-            <div id="handleEveryLabel" class="openHandleTags"><i class="fa fa-tags" aria-hidden="true"></i></div>\
+            <div id="handleEveryLabel">Ändra taggar</div>\
             <section id="infoBox">\
                 <div id="edithLabels">\
                     <ul id="completeLabelList">\
@@ -228,7 +232,9 @@ function sendEmail(item) {
 
 //Visar innehåll för ett specifikt list item
 function toggleDisplay(clicked) {
-    $(clicked).find(".showMe").slideToggle(200, 'linear');
+    var myParent = $(clicked).parent();
+    $(myParent).find(".showMe").slideToggle(200, 'linear');
+    $(myParent).find(".changeInfo").slideToggle(200, 'linear');
 };
 
 //Ta bort tagg

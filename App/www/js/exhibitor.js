@@ -103,14 +103,14 @@ function show_hide_labels(){
         $(handleMyLabels).removeClass('openHandleTags');
         $(handleMyLabels).text(function(){
             return 'Klar'
-        };
+        });
         $(handleMyLabels).css('background-color', '#0EB183')
     }
     else{
         $(handleMyLabels).addClass('openHandleTags');
         $(handleMyLabels).text( function(){
             return "Ändra taggar"
-        }
+        });
         $(handleMyLabels).css('background-color', '#21D3A5')
     }
 
