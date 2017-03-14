@@ -18,9 +18,9 @@ $("#logIn").submit(function(e){
     input.css("border", "1px solid red");
     $("#errorMessage2").show();
   }
-
+  console.log('Körs inlogg')
   $.ajax({
-      url: "http://192.168.1.212:5000/login/",
+      url: "https://doltishkey.pythonanywhere.com/login/",
       type: 'POST',
       data:$("form").serialize(),
       dataType: 'JSON',
@@ -45,6 +45,8 @@ $("#logIn").submit(function(e){
   });
 
 });
+
+
 
 $(document).ready(function() {
     $('#newPasswordForm').submit( function(e) {

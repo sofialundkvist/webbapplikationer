@@ -163,7 +163,7 @@ var ajaxSubmit = (function(){
     var sendAjax = function(form){
         $.ajax({
             type: 'POST',
-            url: '/attendant/',
+            url: 'https://doltishkey.pythonanywhere.com/attendant/',
             data: $(form).serialize(),
             success: function(response) {
                 var json = $.parseJSON(response);

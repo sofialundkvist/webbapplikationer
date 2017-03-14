@@ -1,9 +1,9 @@
 var dataList = [];
 
 function getItems() {
-
     $.ajax({
-        url: '/exhibitor/contacts',
+        headers: User.getInfo(),
+        url: 'https://doltishkey.pythonanywhere.com/exhibitor/contacts',
         method: 'GET',
         success: function(data){
             json = $.parseJSON(data);
@@ -97,6 +97,7 @@ function addItem(data){
     })
     $('.changeInfo').hide();
     $('.overlay').hide();
+
     $('.changeInfo').click(function(event){
         var thisParent = event.target.parentNode;
         var frontendID = $(thisParent).attr('data-frontEnd-id');
@@ -235,7 +236,6 @@ function toggleDisplay(clicked) {
     var myParent = $(clicked).parent();
     $(myParent).find(".showMe").slideToggle(200, 'linear');
     $(myParent).find(".changeInfo").slideToggle(200, 'linear');
-};
 
 //Ta bort tagg
 $(document).ready(function(){
@@ -358,15 +358,16 @@ var ajaxComponents = (function(){
 
     var setUrl = function(){
         if(window.location.href.indexOf("attendant") > -1) {
-            return '/attendant/'
+            return 'https://doltishkey.pythonanywhere.com/attendant/'
         }
         else{
-            return '/exhibitor/'
+            return 'https://doltishkey.pythonanywhere.com/exhibitor/'
         }
     };
 
     var sendAjax = function(url){
         $.ajax({
+            headers: User.getInfo(),
             url: url,
             type: state.delete ? 'DELETE' : 'POST',
             dataType: 'JSON',
@@ -451,7 +452,8 @@ var addExhibitor = (function(){
         $('#spinner').show()
          $(":submit").attr("disabled", true);
         $.ajax({
-            url: "/exhibitor/",
+            headers: User.getInfo(),
+            url: "https://doltishkey.pythonanywhere.com/exhibitor/",
             type: 'POST',
             data:$(form).serialize(),
             dataType: 'JSON',
@@ -516,7 +518,7 @@ var message = (function(){
 }());
 
 window.onload = (function(){
-    if(window.location.href.indexOf("utstallare") > -1) {
+    if(window.location.href.indexOf("index") > -1) {
            getItems();
         }
     addExhibitor.eventListener();

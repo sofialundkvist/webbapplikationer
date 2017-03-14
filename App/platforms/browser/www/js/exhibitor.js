@@ -13,12 +13,15 @@ function infoUpdatedFeedback(){
 };
 
 function saveConnectionInfo(ConnectionInfo, ConnectionId){
+    console.log('ajax för att spara!')
     $.ajax({
+        headers: User.getInfo(),
         type: 'POST',
         data: ConnectionInfo,
-        url:'/connection/'+ ConnectionId,
+        url:'https://doltishkey.pythonanywhere.com/connection/'+ ConnectionId,
         traditional: true,
         success: function(response){
+            console.log(response)
             json = $.parseJSON(response);
             if ( json == true){
                 infoUpdatedFeedback();
@@ -34,10 +37,14 @@ function saveConnectionInfo(ConnectionInfo, ConnectionId){
 
 
 function AjaxFrontEndId(id){
+    console.log('körAjaxFrontEndId')
     $.ajax({
+        headers: User.getInfo(),
         type: 'GET',
-        url: '/attendant/' + id + '/',
+        url: 'https://doltishkey.pythonanywhere.com/attendant/' + id + '/',
         success: function(response){
+            console.log('Success med front_end_id!')
+            console.log(response)
             var json = $.parseJSON(response);
             if ( json !== false){
                 $('#result ul').empty();
@@ -49,9 +56,9 @@ function AjaxFrontEndId(id){
 
                 $('#result ul li').click(function(){
                     /* För LIVE-VERSION
-                    var theURL = 'https://massa.avmediaskane.se/attendant/' + $(this).attr('data-frontendid') + '/' + $(this).attr('data-userid');
+                    var theURL = 'https://doltishkey.pythonanywhere.com/attendant/' + $(this).attr('data-frontendid') + '/' + $(this).attr('data-userid');
                     */
-                    var theURL = '/attendant/' + $(this).attr('data-frontendid') + '/' + $(this).attr('data-userid');
+                    var theURL = 'https://doltishkey.pythonanywhere.com/attendant/' + $(this).attr('data-frontendid') + '/' + $(this).attr('data-userid');
                     AjaxQR(theURL)
                 })
                 return;
@@ -64,6 +71,7 @@ function AjaxFrontEndId(id){
             }
         },
         error: function(){
+            console.log('Fel med front_end_id!')
             $('#alertMessage').text(function(){
                 $('#result ul').empty();
                 return 'Något gick fel. Ladda om sidan'
@@ -103,14 +111,14 @@ function show_hide_labels(){
         $(handleMyLabels).removeClass('openHandleTags');
         $(handleMyLabels).text(function(){
             return 'Klar'
-        };
+        });
         $(handleMyLabels).css('background-color', '#0EB183')
     }
     else{
         $(handleMyLabels).addClass('openHandleTags');
         $(handleMyLabels).text( function(){
             return "Ändra taggar"
-        }
+        });
         $(handleMyLabels).css('background-color', '#21D3A5')
     }
 
@@ -170,7 +178,10 @@ function chooseLabel(thisobj){
 
 
 function AjaxQR(x){
+    console.log('körs')
+    console.log(x)
     $.ajax({
+        headers: User.getInfo(),
         type: 'POST',
         url:x,
         success: function(response){
@@ -205,8 +216,8 @@ function AjaxQR(x){
                 <section id="contacts">\
                      <figure>\
                         <a href="/utstallare/qr">\
-                            <svg class="addIcon" width="31px" height="31px" viewBox="0 0 31 31" version="1.1" xmlns="http://www.w3.org/2000/svg"\
-                               xmlns:xlink="http://www.w3.org/1999/xlink">\
+                            <svg class="addIcon" width="31px" height="31px" viewBox="0 0 31 31" version="1.1" xmlns="https://www.w3.org/2000/svg"\
+                               xmlns:xlink="https://www.w3.org/1999/xlink">\
                                 <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
                                     <g id="iPhone_added" transform="translate(-68.000000, -613.000000)" fill="#21D3A5">\
                                         <path d="M89.3125,629.46875 L84.46875,629.46875 L84.46875,634.3125 C84.46875,634.845312 84.0357188,635.28125 \   83.5,635.28125 C82.9642812,635.28125 82.53125,634.845312 82.53125,634.3125 L82.53125,629.46875 L77.6875,629.46875 C77.1517812,629.46875\ 76.71875,629.032812 76.71875,628.5 C76.71875,627.967188 77.1517812,627.53125 77.6875,627.53125 L82.53125,627.53125 L82.53125,622.6875\ C82.53125,622.154688 82.9642812,621.71875 83.5,621.71875 C84.0357188,621.71875 84.46875,622.154688 84.46875,622.6875 L84.46875,627.53125\ L89.3125,627.53125 C89.8482188,627.53125 90.28125,627.967188 90.28125,628.5 C90.28125,629.032812 89.8482188,629.46875 89.3125,629.46875\ L89.3125,629.46875 Z M83.5,613 C74.9391563,613 68,619.93625 68,628.5 C68,637.06375 74.9391563,644 83.5,644 C92.0608437,644 99,637.06375 99,628.5  C99,619.93625 92.0608437,613 83.5,613 L83.5,613 Z" id="Fill-25"></path> \
@@ -218,7 +229,7 @@ function AjaxQR(x){
                     </figure>\
                     <figure>\
                         <a href="/utstallare">\
-                            <svg class="addIcon" width="31px" height="31px" viewBox="0 0 31 31" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> \
+                            <svg class="addIcon" width="31px" height="31px" viewBox="0 0 31 31" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"> \
                             <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
                                 <g id="iPhone_added" transform="translate(-257.000000, -613.000000)">\
                                     <g id="Group-2" transform="translate(257.000000, 613.000000)">\
@@ -248,6 +259,7 @@ function AjaxQR(x){
                 labelsOnConnection(labels, labelList);
 
                 $('#saveInfoBtn').click(function(){
+                    console.log('Spara!')
                     saveInfo(json.connections.id);
                 });
 
@@ -287,7 +299,6 @@ function validateAttendantID(input){
 
 
 function searchForAttendant(){
-
     $('#searchSection').submit(function(event){
         event.preventDefault(event)
     });
@@ -355,7 +366,8 @@ var addLable = (function(){
 
     var sendAjax = function(form){
         $.ajax({
-            url: '/label/',
+            headers: User.getInfo(),
+            url: 'https://doltishkey.pythonanywhere.com/label/',
             type: 'POST',
             data:$(form).serialize(),
             dataType: 'JSON',
@@ -398,7 +410,8 @@ var deleteLabel = (function(){
     var sendAjax = function(element){
         id = element.data('id')
         $.ajax({
-            url: '/label/'+id,
+            headers: User.getInfo(),
+            url: 'https://doltishkey.pythonanywhere.com/label/'+id,
             type: 'DELETE',
             dataType: 'JSON',
             success: function(response) {
@@ -422,9 +435,69 @@ var deleteLabel = (function(){
 }());
 
 
+var User = (function(){
+
+    getInfo = function(){
+        var token = $.parseJSON(localStorage.getItem("auth"))
+        var id = $.parseJSON(localStorage.getItem("id"))
+        return{'token':token, 'id':id}
+    };
+
+    return{
+        getInfo:getInfo,
+    }
+}());
+
+
 $( document ).ready(function(){
     searchForAttendant();
     addLable.eventHandlers()
     deleteLabel.eventHandler()
+    User.getInfo()
 
+
+
+    console.log('Körs!!')
+    $('#starScan').click(function(){
+        console.log('klickad!')
+    });
+    document.addEventListener("deviceready", onDeviceReady, false);
 });
+
+
+
+
+
+
+
+
+
+
+function onDeviceReady() {
+
+    $('#starScan').click(function(){
+        console.log('klick!')
+        cordova.plugins.barcodeScanner.scan(
+              function (result) {
+                  console.log('Ska skicka qr')
+                  AjaxQR(result.text);
+              },
+              function (error) {
+                  //alert("Scanning failed: " + error);
+                  document.getElementById('alertMessage').innerHTML = 'Kunde inte läsa QR-koden, försök igen';
+              },
+              {
+                  preferFrontCamera : false, // iOS and Android
+                  showFlipCameraButton : false, // iOS and Android
+                  showTorchButton : true, // iOS and Android
+                  torchOn: true, // Android, launch with the torch switched on (if available)
+                  prompt : "Place a barcode inside the scan area", // Android
+                  resultDisplayDuration: 500, // Android, display scanned text for X ms. 0 suppresses it entirely, default 1500
+                  formats : "QR_CODE,PDF_417", // default: all but PDF_417 and RSS_EXPANDED
+                  orientation : "landscape", // Android only (portrait|landscape), default unset so it rotates with the device
+                  disableAnimations : true, // iOS
+                  disableSuccessBeep: true // iOS
+              }
+           );
+    });
+}

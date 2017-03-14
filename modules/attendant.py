@@ -120,7 +120,7 @@ class Attendant(Base):
 
     def generate_qr(self):
         user_id = self.get_id()
-        img = qrcode.make('https://massa.avmediaskane.se/attendant/'+self.front_end_id+'/'+str(user_id))
+        img = qrcode.make('https://doltishkey.pythonanywhere.com/attendant/'+self.front_end_id+'/'+str(user_id))
 
         img.filename = str(''.join(random.choice(string.ascii_uppercase + string.digits) for i in range(16)))+'.png'
         while os.path.isfile('static/img/qr/' + img.filename) == True:

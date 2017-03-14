@@ -82,7 +82,8 @@ class User(Base):
 
     def set_key(self, key):
         session = Session()
-        session.query(User).filter_by(id = user.id).update({'session_token':key})
+        self.session_token = key
+        session.query(User).filter_by(id = self.id).update({'session_token':key})
         session.commit()
         session.close()
 
@@ -95,8 +96,11 @@ class User(Base):
         session.commit()
         session.close()
 
-    def is_authenticated(self):
-        return self.authenticated
+    def is_authenticated(self, token):
+        if token == self.session_token:
+             return True
+        else:
+            return False
 
     def is_active(self):
         return True

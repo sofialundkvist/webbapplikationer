@@ -1,7 +1,7 @@
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, redirect, send_file
 from urllib.parse import urlparse, urljoin
 import json
-from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
+
 from itsdangerous import URLSafeTimedSerializer
 from flask_recaptcha import ReCaptcha
 from modules.attendant import Attendant
@@ -21,11 +21,11 @@ app.config['RECAPTCHA_ENABLED'] = True
 app.config['RECAPTCHA_SITE_KEY'] = "6LemXRYUAAAAABgJiRvPpJg8QCt2P94xabA0pWQl" # Localhost
 app.config['RECAPTCHA_SECRET_KEY'] = "6LemXRYUAAAAAGVJHRdRqKFsDyt1DJg3EjnSKXWg" # Localhost
 
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = "log_in_user"
-login_manager.session_protection = "Basic"
-login_serializer = URLSafeTimedSerializer(app.secret_key)
+#login_manager = LoginManager()
+#login_manager.init_app(app)
+#login_manager.login_view = "log_in_user"
+#login_manager.session_protection = "Basic"
+#login_serializer = URLSafeTimedSerializer(app.secret_key)
 
 recaptcha = ReCaptcha()
 recaptcha.init_app(app)
@@ -41,7 +41,21 @@ def admin_requierd(myFunc):
     return wrapper
 
 
-
+def login_required(myFunc):
+    @wraps(myFunc)
+    def wrapper(*args, **kwargs):
+        print(request.headers.get('id'))
+        print(request.headers.get('token'))
+        exhibitor = Exhibitor.get_exhibitor(request.headers.get('id'))
+        if exhibitor:
+            if exhibitor.is_authenticated(request.headers.get('token')):
+                global current_user = {'id':request.headers.get('id')}
+                return myFunc(*args, **kwargs)
+            else:
+                abort(404)
+        else:
+            abort(404)
+    return wrapper
 
 
 @app.route('/utstallare/', methods=['GET'])
@@ -61,6 +75,8 @@ def qr():
 @app.route('/attendant/<front_end_id>/<user_id>', methods=['POST'])
 @login_required
 def connect(front_end_id, user_id):
+    print('Skapar connection')
+    print(current_user.id)
     exhibitor = Exhibitor.get_exhibitor(current_user.id)
     attendant = Attendant.get_user_multi(front_end_id, user_id)
     if attendant:
@@ -102,8 +118,9 @@ def uppdate_conection(connection_id):
     connection = Connection.get_connection(connection_id)
     if connection:
         if connection.get_exhibitor() == current_user.id:
+            print('Du har behörighet att ändra!')
             label_nrs = request.form.getlist('label_nrs')
-            print (label_nrs)
+            print ('Labels är: '+ str(label_nrs))
             comment = request.form.get('comment')
             Label_to_Connection.remove(connection_id)
             for label_nr in label_nrs:
@@ -270,7 +287,7 @@ def log_in_user():
     user = User.get_user(email)
     if user:
         if user.get_password() == hashed:
-            return json.dumps({'logged_in':True, 'id':user.id, 'key':user.generate_key()})
+            return json.dumps({'logged_in':True, 'id':user.id, 'key':user.generate_key() })
         else:
             return json.dumps({'logged_in':False})
     else:
@@ -436,12 +453,11 @@ def page_not_found(e):
 def page_not_found(e):
     return render_template("fel.html", error_list = e)
 
-@login_manager.user_loader
+'''@login_manager.user_loader
 def load_user(session_token):
-    ''' Run at every request to check if there is any user in the current session '''
     session = Session()
     user = session.query(User).filter_by(session_token=session_token).first() # eller hämta via id
-    return user
+    return user'''
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
