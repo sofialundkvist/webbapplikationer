@@ -27,7 +27,6 @@
             <div class="imageHolder">
                 <img alt="" src="#" id="qr-image">
             </div>
-            <!--<input type="file" capture="camera" accept="image/*;capture=camera" id="cameraInput" class="inputFile" name="cameraInput">-->
             <div id="starScan" class="camButton">Öppna kameran</div>
         </section>
         <section id="contacts">
@@ -65,32 +64,10 @@
                 </a>
             </figure>
         </section>
-<script>
-            document.querySelector("#cameraInput").addEventListener("change", function(event) {
-                var output = document.querySelector("#qr-image");
-                output.src = URL.createObjectURL(event.target.files[0]);
-                output.style.display = "block";
-                var qr = new QCodeDecoder();
-                qr.decodeFromImage(document.querySelector("#qr-image"), function (err, result) {
-                    var resultElement = document.querySelector("#result")
-                    if(err){
-                        $('#alertMessage').text(function(){
-                            return 'Kunde inte läsa QR-koden, försök igen'
-                        })
-                    }
-                    else{
-                        AjaxQR(result);
-                    }
-                });
-            });
-    }
-</script>
-<script>
 
-
-</script>
-<script type="text/javascript" src="cordova.js"></script>
 <script src="js/jquery.js" type="text/javascript"></script>
+<script type="text/javascript" src="cordova.js"></script>
 <script src="js/exhibitor.js" type="text/javascript"></script>
+<script src="js/loginrequierd.js" type="text/javascript"></script>
 </body>
 </html>

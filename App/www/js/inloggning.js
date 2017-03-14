@@ -46,6 +46,8 @@ $("#logIn").submit(function(e){
 
 });
 
+
+
 $(document).ready(function() {
     $('#newPasswordForm').submit( function(e) {
         var password1 = $("#newPassword").val()

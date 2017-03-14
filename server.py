@@ -49,6 +49,7 @@ def login_required(myFunc):
         exhibitor = Exhibitor.get_exhibitor(request.headers.get('id'))
         if exhibitor:
             if exhibitor.is_authenticated(request.headers.get('token')):
+                global current_user = {'id':request.headers.get('id')}
                 return myFunc(*args, **kwargs)
             else:
                 abort(404)
@@ -74,6 +75,8 @@ def qr():
 @app.route('/attendant/<front_end_id>/<user_id>', methods=['POST'])
 @login_required
 def connect(front_end_id, user_id):
+    print('Skapar connection')
+    print(current_user.id)
     exhibitor = Exhibitor.get_exhibitor(current_user.id)
     attendant = Attendant.get_user_multi(front_end_id, user_id)
     if attendant:
@@ -115,8 +118,9 @@ def uppdate_conection(connection_id):
     connection = Connection.get_connection(connection_id)
     if connection:
         if connection.get_exhibitor() == current_user.id:
+            print('Du har behörighet att ändra!')
             label_nrs = request.form.getlist('label_nrs')
-            print (label_nrs)
+            print ('Labels är: '+ str(label_nrs))
             comment = request.form.get('comment')
             Label_to_Connection.remove(connection_id)
             for label_nr in label_nrs:

@@ -13,12 +13,15 @@ function infoUpdatedFeedback(){
 };
 
 function saveConnectionInfo(ConnectionInfo, ConnectionId){
+    console.log('ajax för att spara!')
     $.ajax({
+        headers: User.getInfo(),
         type: 'POST',
         data: ConnectionInfo,
         url:'https://doltishkey.pythonanywhere.com/connection/'+ ConnectionId,
         traditional: true,
         success: function(response){
+            console.log(response)
             json = $.parseJSON(response);
             if ( json == true){
                 infoUpdatedFeedback();
@@ -40,6 +43,8 @@ function AjaxFrontEndId(id){
         type: 'GET',
         url: 'https://doltishkey.pythonanywhere.com/attendant/' + id + '/',
         success: function(response){
+            console.log('Success med front_end_id!')
+            console.log(response)
             var json = $.parseJSON(response);
             if ( json !== false){
                 $('#result ul').empty();
@@ -53,7 +58,7 @@ function AjaxFrontEndId(id){
                     /* För LIVE-VERSION
                     var theURL = 'https://doltishkey.pythonanywhere.com/attendant/' + $(this).attr('data-frontendid') + '/' + $(this).attr('data-userid');
                     */
-                    var theURL = '/attendant/' + $(this).attr('data-frontendid') + '/' + $(this).attr('data-userid');
+                    var theURL = 'https://doltishkey.pythonanywhere.com/attendant/' + $(this).attr('data-frontendid') + '/' + $(this).attr('data-userid');
                     AjaxQR(theURL)
                 })
                 return;
@@ -66,6 +71,7 @@ function AjaxFrontEndId(id){
             }
         },
         error: function(){
+            console.log('Fel med front_end_id!')
             $('#alertMessage').text(function(){
                 $('#result ul').empty();
                 return 'Något gick fel. Ladda om sidan'
@@ -105,14 +111,14 @@ function show_hide_labels(){
         $(handleMyLabels).removeClass('openHandleTags');
         $(handleMyLabels).text(function(){
             return 'Klar'
-        };
+        });
         $(handleMyLabels).css('background-color', '#0EB183')
     }
     else{
         $(handleMyLabels).addClass('openHandleTags');
         $(handleMyLabels).text( function(){
             return "Ändra taggar"
-        }
+        });
         $(handleMyLabels).css('background-color', '#21D3A5')
     }
 
@@ -173,6 +179,7 @@ function chooseLabel(thisobj){
 
 function AjaxQR(x){
     console.log('körs')
+    console.log(x)
     $.ajax({
         headers: User.getInfo(),
         type: 'POST',
@@ -252,6 +259,7 @@ function AjaxQR(x){
                 labelsOnConnection(labels, labelList);
 
                 $('#saveInfoBtn').click(function(){
+                    console.log('Spara!')
                     saveInfo(json.connections.id);
                 });
 
@@ -358,6 +366,7 @@ var addLable = (function(){
 
     var sendAjax = function(form){
         $.ajax({
+            headers: User.getInfo(),
             url: 'https://doltishkey.pythonanywhere.com/label/',
             type: 'POST',
             data:$(form).serialize(),
@@ -401,6 +410,7 @@ var deleteLabel = (function(){
     var sendAjax = function(element){
         id = element.data('id')
         $.ajax({
+            headers: User.getInfo(),
             url: 'https://doltishkey.pythonanywhere.com/label/'+id,
             type: 'DELETE',
             dataType: 'JSON',
@@ -445,18 +455,32 @@ $( document ).ready(function(){
     deleteLabel.eventHandler()
     User.getInfo()
 
+
+
     console.log('Körs!!')
-
+    $('#starScan').click(function(){
+        console.log('klickad!')
+    });
     document.addEventListener("deviceready", onDeviceReady, false);
+});
 
 
-    function onDeviceReady() {
 
-    document.getElementById('starScan').addEventListener('click', function(){
+
+
+
+
+
+
+
+function onDeviceReady() {
+
+    $('#starScan').click(function(){
+        console.log('klick!')
         cordova.plugins.barcodeScanner.scan(
               function (result) {
+                  console.log('Ska skicka qr')
                   AjaxQR(result.text);
-                  document.getElementById('alertMessage').innerHTML = result.text;
               },
               function (error) {
                   //alert("Scanning failed: " + error);
@@ -472,10 +496,8 @@ $( document ).ready(function(){
                   formats : "QR_CODE,PDF_417", // default: all but PDF_417 and RSS_EXPANDED
                   orientation : "landscape", // Android only (portrait|landscape), default unset so it rotates with the device
                   disableAnimations : true, // iOS
-                  disableSuccessBeep: false // iOS
+                  disableSuccessBeep: true // iOS
               }
            );
     });
-    }
-
-});
+}
