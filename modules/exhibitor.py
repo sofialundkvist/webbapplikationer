@@ -20,7 +20,7 @@ class Exhibitor(User):
         self.last_logged_in = None
         User.__init__(self, email, 'Massa2017', auth_level = 1)
 
-    def create_lables(self):
+    def create_lables(self, session):
         labels = [
             {'text':'Ring',
             'color':'#663399'
@@ -37,12 +37,8 @@ class Exhibitor(User):
             session.add(new_label)
             session.commit()
 
-    def get_labels(self):
-        global session
-        session = Session()
+    def get_labels(self, session):
         label_list = session.query(Label).filter_by(exhibitor_id=self.id).all()
-        session.expunge_all()
-        session.close()
         new_list = []
         for label in label_list:
             new_list.append(label.get_data())
@@ -66,9 +62,9 @@ class Exhibitor(User):
         worksheet.write('I1', 'Taggar')
         worksheet.write('J1', 'Kommentar')
 
-        connections = Connection.get_all_connections(self.id)
+        connections = Connection.get_all_connections(session, self.id)
         for row, connection in enumerate(connections, 2):
-            data = connection.get_data()
+            data = connection.get_data(session)
 
             str_labels = ""
             for label in data['labels']:
@@ -96,30 +92,22 @@ class Exhibitor(User):
         workbook.close()
         return workbook
 
-    def got_connection(self, attendant_id):
-        global session
-        session = Session()
+    def got_connection(self, session, attendant_id):
         result = session.query(Connection).filter_by(exhibitor=self.id).filter_by(attendant_id = attendant_id).first()
-        session.close()
         if result:
             return True
         else:
             return False
 
-    def delete(self):
-        global session
-        session = Session()
+    def delete(self, session):
         session.delete(self)
         session.commit()
-        session.close()
         return True
 
-    def set_last_logged_in(self):
-        session = Session()
+    def set_last_logged_in(self, session):
         self.last_logged_in = datetime.datetime.now()
         session.query(Exhibitor).filter_by(id = self.id).update({'last_logged_in':self.last_logged_in})
         session.commit()
-        session.close()
 
     def get_last_logged_in(self):
         return self.last_logged_in
@@ -139,9 +127,9 @@ class Exhibitor(User):
 
 
     @classmethod
-    def create(cls, company_name, email):
+    def create(cls, session,  company_name, email):
         validation_dict = {
-            'exists': cls.is_attending(email),
+            'exists': cls.is_attending(session, email),
             'email': Validator.email(email),
             'company_name': Validator.is_empty(company_name),
         }
@@ -150,30 +138,19 @@ class Exhibitor(User):
             if not value:
                 return False, validation_dict
 
-        global session
-        session = Session()
         exhibitor = Exhibitor(company_name, email)
         message = {"email": email, "password": "Massa2017"}
         session.add(exhibitor)
         session.flush()
-        exhibitor.create_lables()
-        session.expunge_all()
-        session.close()
+        exhibitor.create_lables(session)
         return True, 'Skapad'
 
     @classmethod
-    def get_exhibitor(cls,id):
-        global session
-        session = Session()
+    def get_exhibitor(cls, session, id):
         result = session.query(Exhibitor).filter_by(id=id).first()
-        session.expunge_all()
-        session.close()
         return result
 
     @classmethod
-    def get_all_exhibitors(cls):
-        global session
-        session = Session()
+    def get_all_exhibitors(cls, session):
         result = session.query(Exhibitor).filter_by(auth_level=1).all()
-        session.close()
         return result

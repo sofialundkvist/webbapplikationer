@@ -1,11 +1,13 @@
 var dataList = [];
 
 function getItems() {
+    console.log('vill hämta kontakter')
     $.ajax({
         headers: User.getInfo(),
         url: 'https://doltishkey.pythonanywhere.com/exhibitor/contacts',
         method: 'GET',
         success: function(data){
+            console.log(data)
             json = $.parseJSON(data);
             addItem(json);
             label.init(json['labels']);
@@ -45,14 +47,22 @@ function addItem(data){
             };
         };
 
+        labelString = JSON.stringify(labels)
+
+        if(labelText.length > 0){
+            labelTextItem = 'Taggar:' + labelText
+        }
+        else{
+            labelTextItem = ''
+        }
 
 
         $('#VisitorInfo').append(
-            '<li data-tags="'+labels+'" data-frontEnd-id="' +dataList[i].attendant.front_end_id+'" \
+            '<li data-tags="'+labelString+'" data-frontEnd-id="' +dataList[i].attendant.front_end_id+'" \
             data-id="'+dataList[i].attendant.id+'">\
                 <p class="dataId">' +  dataList[i].attendant.id + '</p>\
-                <p class="visitorName" onclick="toggleDisplay(this)">' + dataList[i].attendant.first_name + ' ' + dataList[i].attendant.surname +'</p>\
-                <p style="font-size:13px;">Taggar: '+ labelText +'</p>\
+                <p class="visitorName">' + dataList[i].attendant.first_name + ' ' + dataList[i].attendant.surname +'</p>\
+                <p style="font-size:13px;">'+ labelTextItem +'</p>\
                 <div class="changeInfo">Redigera Info</div>\
                 <section class="overlay"></section>\
                 <div class="showMe">\
@@ -91,6 +101,10 @@ function addItem(data){
             </li>'
         );
     };
+
+    $('.visitorName').click(function(){
+        toggleDisplay(this);
+    })
     $('.changeInfo').hide();
     $('.overlay').hide();
 
@@ -110,7 +124,7 @@ function addItem(data){
 function editInfo(connections, myLabels, parentObj, clicked_button){
     var myVar = $(parentObj).find('.overlay');
     $(myVar).html('<div id="close-overlay">X</div>\
-            <div id="handleEveryLabel" class="openHandleTags"><i class="fa fa-tags" aria-hidden="true"></i></div>\
+            <div id="handleEveryLabel">Ändra taggar</div>\
             <section id="infoBox">\
                 <div id="edithLabels">\
                     <ul id="completeLabelList">\
@@ -124,12 +138,12 @@ function editInfo(connections, myLabels, parentObj, clicked_button){
                     <textarea id="comment">' + connections.comment + '</textarea>\
                     <div id="saveInfoBtn">Spara</div>\
                 </form>\
-            </section>')
+            </section>');
 
     $('#close-overlay').click(function(){
         $(myVar).html('')
         $(myVar).slideToggle(300);
-    })
+    });
     $(myVar).slideToggle(300);
 
     hideLabelMenu();
@@ -229,9 +243,10 @@ function sendEmail(item) {
 
 //Visar innehåll för ett specifikt list item
 function toggleDisplay(clicked) {
-    $(clicked).find(".showMe").slideToggle(200, 'linear'); //<------ Bugg
-};
-
+    var myParent = $(clicked).parent();
+    $(myParent).find(".showMe").slideToggle(200, 'linear');
+    $(myParent).find(".changeInfo").slideToggle(200, 'linear');
+}
 //Ta bort tagg
 $(document).ready(function(){
     $(".tags").on("taphold",function(){
@@ -312,12 +327,12 @@ var label = (function(){
                 $(this).show();
             }
             else{
-                try{
+                /*try{
                     var contactLabels = $.makeArray($(this).data('tags').split(','));
                 }
                 catch(err){
                     var contactLabels = $.makeArray($(this).data('tags'));
-                }
+                }*/
                 var contactLabels = $.makeArray($(this).data('tags'));
                 var display = []
                 var length = contactLabels.length
@@ -512,11 +527,11 @@ var message = (function(){
     }
 }());
 
-window.onload = (function(){
+$(document).ready(function() {
     if(window.location.href.indexOf("index") > -1) {
            getItems();
-        }
+    }
     addExhibitor.eventListener();
     ajaxComponents.eventListenerMail();
     ajaxComponents.eventListenerRemove();
-}());
+});
