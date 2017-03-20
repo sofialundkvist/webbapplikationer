@@ -17,11 +17,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
 
-
 def createSession():
     global session
     session = Session()
-
 
 current_user = None
 
@@ -306,7 +304,7 @@ def log_in():
 
 @app.route('/login/', methods=['POST'])
 def log_in_user():
-    ''' Call log_in user and return template depending on user level '''
+    ''' Call log_in user and return True or False if logged in or not '''
     createSession()
     email = request.form.get('username')
     user_psw = request.form.get('password')

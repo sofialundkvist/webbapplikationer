@@ -10,26 +10,6 @@ class Validator():
             return False
 
     @staticmethod
-    def digit_converter(item):
-        if item.isdigit():
-            return int(item)
-
-    @staticmethod
-    def int(item):
-        try:
-            int(item)
-            return True
-        except ValueError:
-            return False
-
-    @staticmethod
-    def min_lenght(item, range):
-        if len(item) >= range:
-            return True
-        else:
-            return False
-
-    @staticmethod
     def is_empty(item):
         if item:
             return True

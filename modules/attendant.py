@@ -51,23 +51,8 @@ class Attendant(Base):
             session.add(yearer)
             session.commit()
 
-    def get_info(self):
-        return {
-            'email': self.email,
-            'first_name': self.first_name,
-            'surname': self.surname,
-            'birth_day': self.birth_day,
-            'birth_month': self.birth_month,
-            'school': self.school,
-            'year': self.year,
-            'commune': self.commune
-        }
-
     def get_name(self):
         return self.first_name
-
-    def get_email(self):
-        return self.email
 
     def get_front_end_id(self):
         return self.front_end_id
@@ -126,17 +111,6 @@ class Attendant(Base):
         img.save(file_path)
         session.query(Attendant).filter_by(id = user_id).update({'qr':img.filename})
         return img.filename
-
-    def resend_email(self):
-        message={
-            'name': self.first_name,
-            'front_end_id': self.front_end_id,
-            'qr':'https://www.massa.avmediaskane.se/static/img/qr/'+self.qr,
-            'link': 'https://www.massa.avmediaskane.se/thanks/'+str(self.front_end_id)+'/'+str(self.id)
-        }
-
-
-
 
     def delete(self, session):
         session.delete(self)
@@ -232,10 +206,10 @@ class Attendant(Base):
             attendant_list.append(attendant.get_data(session))
         return attendant_list
 
-    @classmethod
+    '''@classmethod
     def get_all_attendants(cls, session):
         result = session.query(Attendant).all()
-        return result
+        return result'''
 
 class Subject(Base):
 
