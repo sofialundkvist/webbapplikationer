@@ -375,12 +375,12 @@ a:hover #Fill-25{
 
 #completeLabelList > .tags{
     background-image: linear-gradient(right, #E74B4E, #E74B4E 24px, transparent 24px, transparent 100%);
-    background-image: -webkit-linear-gradient(right, #E74B4E, #E74B4E 24px, transparent 24px, transparent 100%)
+    background-image: -webkit-linear-gradient(right, #E74B4E, #E74B4E 24px, transparent 24px, transparent 100%);
 }
 
 #completeLabelList > #addTagBtn{
     background-image: linear-gradient(right, #1fc89c, #1fc89c 24px, transparent 24px, transparent 100%);
-    background-image: -webkit-linear-gradient(right, #1fc89c, #1fc89c 24px, transparent 24px, transparent 100%)
+    background-image: -webkit-linear-gradient(right, #1fc89c, #1fc89c 24px, transparent 24px, transparent 100%);
 }
 
 #completeLabelList > li:last-child{
@@ -421,6 +421,7 @@ a:hover #Fill-25{
     background-color: #1fc89c;
     cursor: pointer;
 }
+
 #saveInfoBtn {
     width: 58%;
     text-align: center;
