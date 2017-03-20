@@ -468,6 +468,11 @@ form {
     z-index: 10000;
 }
 
+.overlay > #handleEveryLabel{
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .changeInfo{
     min-width: 40px;
     margin-right: 5px;

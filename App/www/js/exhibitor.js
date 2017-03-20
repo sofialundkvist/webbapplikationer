@@ -23,7 +23,7 @@ function saveConnectionInfo(ConnectionInfo, ConnectionId){
         success: function(response){
             console.log(response)
             json = $.parseJSON(response);
-            if ( json == true){
+            if ( json == true ){
                 infoUpdatedFeedback();
             };
         },
@@ -53,6 +53,8 @@ function AjaxFrontEndId(id){
                     $(resultList).append('<li data-frontendid="' + value['front_end_id'] + '" data-userid="' + value['id'] + '">' + '<p>' + value["first_name"] + ': ' + value["email"] + '</p>' + '</li>');
                     return resultList;
                 });
+
+                $('#searchField').blur();
 
                 $('#result ul li').click(function(){
                     /* För LIVE-VERSION
@@ -198,7 +200,7 @@ function AjaxQR(x){
                         <h3>' + json.connections.attendant.first_name + ' tillagd i dina kontakter ✓</h3>\
                         <div id="addInfo">Lägg till kommentar</div>\
                         <section id="infoBox">\
-                        <div id="handleEveryLabel">Ändra taggar</div>\
+                        <div id="handleEveryLabel" class="openHandleTags">Ändra taggar</div>\
                             <div id="edithLabels">\
                                 <ul id="completeLabelList">\
                                     <li class="tags" id="addTagBtn"><div id="addLabel">Ny Tagg<div id="plus">+</div></div></li>\
@@ -213,39 +215,6 @@ function AjaxQR(x){
                         </form>\
                         </section>\
                     </div>\
-                </section>\
-                <section id="contacts">\
-                     <figure>\
-                        <a href="/utstallare/qr">\
-                            <svg class="addIcon" width="31px" height="31px" viewBox="0 0 31 31" version="1.1" xmlns="https://www.w3.org/2000/svg"\
-                               xmlns:xlink="https://www.w3.org/1999/xlink">\
-                                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
-                                    <g id="iPhone_added" transform="translate(-68.000000, -613.000000)" fill="#21D3A5">\
-                                        <path d="M89.3125,629.46875 L84.46875,629.46875 L84.46875,634.3125 C84.46875,634.845312 84.0357188,635.28125 \   83.5,635.28125 C82.9642812,635.28125 82.53125,634.845312 82.53125,634.3125 L82.53125,629.46875 L77.6875,629.46875 C77.1517812,629.46875\ 76.71875,629.032812 76.71875,628.5 C76.71875,627.967188 77.1517812,627.53125 77.6875,627.53125 L82.53125,627.53125 L82.53125,622.6875\ C82.53125,622.154688 82.9642812,621.71875 83.5,621.71875 C84.0357188,621.71875 84.46875,622.154688 84.46875,622.6875 L84.46875,627.53125\ L89.3125,627.53125 C89.8482188,627.53125 90.28125,627.967188 90.28125,628.5 C90.28125,629.032812 89.8482188,629.46875 89.3125,629.46875\ L89.3125,629.46875 Z M83.5,613 C74.9391563,613 68,619.93625 68,628.5 C68,637.06375 74.9391563,644 83.5,644 C92.0608437,644 99,637.06375 99,628.5  C99,619.93625 92.0608437,613 83.5,613 L83.5,613 Z" id="Fill-25"></path> \
-                                    </g> \
-                                </g>\
-                            </svg>\
-                            <figcaption>Lägg till kontakt</figcaption>\
-                        </a>\
-                    </figure>\
-                    <figure>\
-                        <a href="/utstallare">\
-                            <svg class="addIcon" width="31px" height="31px" viewBox="0 0 31 31" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"> \
-                            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
-                                <g id="iPhone_added" transform="translate(-257.000000, -613.000000)">\
-                                    <g id="Group-2" transform="translate(257.000000, 613.000000)">\
-                                        <g id="Group">\
-                                            <circle id="Oval-5" fill="#444" cx="15.5" cy="15.5" r="15.5"></circle>\
-                                            <path d="M24.9097241,21.0580949 C25.6371537,22.267194 25.5777717,24.4125 25.5777717,24.4125 L5.42777171,24.4125 C5.42777171,24.4125 5.32974315,22.0888024 6.29964932,20.8797033 C6.84522155,20.3643495 8.56276373,18.6002541 11.4926886,18.1641856 C14.4024072,17.7479384 13.5133265,14.5765309 13.6143584,14.6161735 C13.7153903,14.6756373 13.594152,13.9422494 13.594152,13.9422494 C13.594152,13.9422494 11.4724823,11.9402984 11.4926886,10.1365604 C11.5331014,8.31300107 11.4926886,7.38140011 11.4926886,7.38140011 C11.4926886,7.38140011 11.8361971,3.1 14.8267411,3.1 L16.5038706,3.89285187 C19.1913189,3.89285187 19.6358593,7.38140011 19.6358593,7.38140011 L19.6358593,10.3942372 C19.6358593,10.3942372 19.2923508,12.9511845 17.6152214,13.8827855 C17.6152214,13.8827855 17.4939831,14.6161735 17.595015,14.5567096 C17.6960469,14.517067 16.7261407,17.7479384 19.6358593,18.1840069 C22.5657842,18.6002541 24.5258029,20.4039921 24.9097241,21.0580949 Z" id="Shape" fill="#FFFFFF"></path>\
-                                            <path d="M15.5,29.45 C21.0642689,29.45 25.575,26.5931241 25.575,24.025 C25.575,21.4568759 21.0642689,18.6 15.5,18.6 C9.93573115,18.6 5.425,21.4568759 5.425,24.025 C5.425,26.5931241 9.93573115,29.45 15.5,29.45 Z" id="Oval-7" fill="#FFFFFF"></path>\
-                                        </g>\
-                                    </g>\
-                                </g>\
-                            </g>\
-                        </svg>\
-                            <figcaption>Kontakter</figcaption>\
-                        </a>\
-                    </figure>\
                 </section>')
 
                 hideLabelMenu();
