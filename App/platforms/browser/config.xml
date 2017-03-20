@@ -4,7 +4,6 @@
         <param name="browser-package" value="BarcodeScanner" />
     </feature>
     <name>AV-media app</name>
-    <icon src="img/icon.png" />
     <description>
         Skanna besökare och håll koll på dina kontaker.
     </description>
