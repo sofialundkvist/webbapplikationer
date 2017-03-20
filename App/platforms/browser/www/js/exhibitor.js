@@ -465,6 +465,16 @@ $( document ).ready(function(){
     document.addEventListener("deviceready", onDeviceReady, false);
 });
 
+$(document).on('keydown', '#searchField', function (event) {
+    $('#searchField').keydown(function() {
+    if($(this).val().length > 4) {
+         $('#qr-image').hide();
+    } else {
+         $('#qr-image').show();
+    }
+    });
+});
+
 
 
 
@@ -476,7 +486,7 @@ $( document ).ready(function(){
 
 function onDeviceReady() {
 
-    $('#starScan').click(function(){
+    $('.scanner').click(function(){
         console.log('klick!')
         cordova.plugins.barcodeScanner.scan(
               function (result) {
