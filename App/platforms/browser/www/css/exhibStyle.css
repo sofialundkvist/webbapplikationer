@@ -166,7 +166,22 @@ figure{
 
 .addIcon{
     min-width:22px;
-    filter: grayscale(100%);
+}
+
+#img1{
+    filter: grayscale(0%)
+}
+
+#img2{
+    filter: grayscale(100%)
+}
+
+#img3{
+  filter: grayscale(100%)
+}
+
+#img4{
+  filter: grayscale(0%)
 }
 #searchSection{
     width:100%;
