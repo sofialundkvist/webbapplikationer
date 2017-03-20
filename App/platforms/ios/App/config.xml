@@ -18,12 +18,12 @@
     <feature name="BarcodeScanner">
         <param name="ios-package" value="CDVBarcodeScanner" />
     </feature>
-    <name>App</name>
+    <name>AV-media app</name>
     <description>
-        A blank PhoneGap app.
+        Event app for communication between attendants and exhibitors at an specific event.
     </description>
-    <author email="support@phonegap.com" href="http://phonegap.com">
-        PhoneGap Team
+    <author email="jcbpettersson@gmail.com" href="none">
+        TuT Team
     </author>
     <content src="index.html" />
     <access origin="*" />
