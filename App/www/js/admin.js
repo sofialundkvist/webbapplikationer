@@ -123,8 +123,8 @@ function addItem(data){
 
 function editInfo(connections, myLabels, parentObj, clicked_button){
     var myVar = $(parentObj).find('.overlay');
-    $(myVar).html('<div id="close-overlay">X</div>\
-            <div id="handleEveryLabel">Ändra taggar</div>\
+    $(myVar).html('<div id="close-overlay"></div>\
+            <div id="handleEveryLabel" class="openHandleTags">Lägg till nya taggar</div>\
             <section id="infoBox">\
                 <div id="edithLabels">\
                     <ul id="completeLabelList">\

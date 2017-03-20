@@ -335,6 +335,7 @@ a:hover #Fill-25{
 */
 
 #handleEveryLabel{
+    box-sizing:border-box;
     width:50%;
     margin:0 auto;
     text-align: center;
@@ -353,7 +354,7 @@ a:hover #Fill-25{
 
 #plus{
     float:right;
-    padding-left:3px;
+    padding-left:6px;
     margin-left:3px;
 }
 
@@ -369,13 +370,17 @@ a:hover #Fill-25{
 }
 
 #completeLabelList > .tags{
-    background-image: linear-gradient(right, #E74B4E, #E74B4E 18px, transparent 18px, transparent 100%);
-    background-image: -webkit-linear-gradient(right, #E74B4E, #E74B4E 18px, transparent 18px, transparent 100%)
+    background-image: linear-gradient(right, #E74B4E, #E74B4E 24px, transparent 24px, transparent 100%);
+    background-image: -webkit-linear-gradient(right, #E74B4E, #E74B4E 24px, transparent 24px, transparent 100%)
 }
 
 #completeLabelList > #addTagBtn{
-    background-image: linear-gradient(right, #1fc89c, #1fc89c 18px, transparent 18px, transparent 100%);
-    background-image: -webkit-linear-gradient(right, #1fc89c, #1fc89c 18px, transparent 18px, transparent 100%)
+    background-image: linear-gradient(right, #1fc89c, #1fc89c 24px, transparent 24px, transparent 100%);
+    background-image: -webkit-linear-gradient(right, #1fc89c, #1fc89c 24px, transparent 24px, transparent 100%)
+}
+
+#completeLabelList > li:last-child{
+    border-radius:50px;
 }
 
 .tags{
@@ -384,7 +389,7 @@ a:hover #Fill-25{
     margin-bottom: 5px;
     float: left;
     min-height: 10px;
-    padding: 6px;
+    padding: 10px;
     display: inline-block;
     font-size: 14px;
     border-radius: 3px;
@@ -453,8 +458,11 @@ form {
     display: none;
 }
 
-#completeLabelList {
+#edithLabels > #completeLabelList {
     display: inline-block;
+    display:block;
+    width:80%;
+    margin:0 auto;
 }
 
 .overlay {
@@ -469,9 +477,37 @@ form {
 }
 
 .overlay > #handleEveryLabel{
-    margin-left: auto;
-    margin-right: auto;
+    position:relative;
+    margin:5% auto;
+    left:25%;
 }
+
+
+#close-overlay:before, #close-overlay:after{
+    position:absolute;
+    right:10%;
+    top:4%;
+	content:' ';
+	height:27px;
+	width:2px;
+	background-color:#fff;
+}
+
+#close-overlay:before{
+	transform: rotate(45deg);
+}
+
+ #close-overlay:after{
+	transform: rotate(-45deg);
+}
+
+#connectionForm > ul{
+    display:block;
+    width:80%;
+    margin:0 auto;
+}
+
+
 
 .changeInfo{
     min-width: 40px;

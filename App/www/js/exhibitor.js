@@ -23,7 +23,7 @@ function saveConnectionInfo(ConnectionInfo, ConnectionId){
         success: function(response){
             console.log(response)
             json = $.parseJSON(response);
-            if ( json == true ){
+            if ( json == true){
                 infoUpdatedFeedback();
             };
         },
@@ -112,14 +112,14 @@ function show_hide_labels(){
     if( $(handleMyLabels).attr('class') == 'openHandleTags'){
         $(handleMyLabels).removeClass('openHandleTags');
         $(handleMyLabels).text(function(){
-            return 'Klar'
+            return 'Spara nya taggar'
         });
         $(handleMyLabels).css('background-color', '#0EB183')
     }
     else{
         $(handleMyLabels).addClass('openHandleTags');
         $(handleMyLabels).text( function(){
-            return "Ändra taggar"
+            return "Lägg till nya taggar"
         });
         $(handleMyLabels).css('background-color', '#21D3A5')
     }
@@ -200,7 +200,7 @@ function AjaxQR(x){
                         <h3>' + json.connections.attendant.first_name + ' tillagd i dina kontakter ✓</h3>\
                         <div id="addInfo">Lägg till kommentar</div>\
                         <section id="infoBox">\
-                        <div id="handleEveryLabel" class="openHandleTags">Ändra taggar</div>\
+                        <div id="handleEveryLabel">Ändra taggar</div>\
                             <div id="edithLabels">\
                                 <ul id="completeLabelList">\
                                     <li class="tags" id="addTagBtn"><div id="addLabel">Ny Tagg<div id="plus">+</div></div></li>\
