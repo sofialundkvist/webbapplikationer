@@ -502,3 +502,7 @@ function onDeviceReady() {
            );
     });
 }
+
+$(".addIcon").on("click", function(){
+  $(this).css("filter", "grayscale(0%)");
+});

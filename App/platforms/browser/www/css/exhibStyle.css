@@ -166,8 +166,8 @@ figure{
 
 .addIcon{
     min-width:22px;
+    filter: grayscale(100%);
 }
-
 #searchSection{
     width:100%;
     display:inline-block;
