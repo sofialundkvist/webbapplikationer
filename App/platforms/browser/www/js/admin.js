@@ -166,7 +166,7 @@ function editInfo(connections, myLabels, parentObj, clicked_button){
     addLable.eventHandlers();
     deleteLabel.eventHandler();
     return;
-}
+};
 
 //Visar en bekräftelse på att användaren vill ta bort utställare/besökare
 function confirmDelete() {
@@ -246,7 +246,8 @@ function toggleDisplay(clicked) {
     var myParent = $(clicked).parent();
     $(myParent).find(".showMe").slideToggle(200, 'linear');
     $(myParent).find(".changeInfo").slideToggle(200, 'linear');
-}
+};
+
 //Ta bort tagg
 $(document).ready(function(){
     $(".tags").on("taphold",function(){
