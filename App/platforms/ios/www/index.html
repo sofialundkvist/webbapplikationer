@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Inloggad - utställare</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        <link rel="stylesheet" href="css/inloggad.css">
+        <link rel="stylesheet" type="text/css" href="css/exhibStyle.css">
+        <link href="js/sweetalert/dist/sweetalert.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+      <div id="wrapper">
+        <header>
+            <h1>Kontakter</h1>
+            <a href="inloggning.html"><button id="logOut">Logga ut</button></a>
+        </header>
+
+          <div id='content'>
+            <a id='downloadContacts' href="/save_to_excel/"><img id='downloadIcon' class='listButton' src="img/cloud_button.svg">    Ladda ned kontakter (excel)</a>
+          <h2>Sortera efter taggar</h2>
+              <ul id='tags'>
+
+              </ul>
+
+          <ol id="VisitorInfo">
+          </ol>
+        </div>
+
+          <section id="contacts">
+             <figure>
+                <a href="qr.html">
+                    <img class="addIcon" width="31px" height="31px" src="img/add_contact_icon.png" alt="plusSign" id="img3">
+                    <figcaption>Lägg till kontakt</figcaption>
+                </a>
+            </figure>
+            <figure>
+                <a href="index.html">
+                    <img class="addIcon" width="31px" height="31px" src="img/contacts_icon.png" alt="contacts" id="img4">
+                    <figcaption>Kontakter</figcaption>
+                </a>
+            </figure>
+        </section>
+
+      </div>
+      <script src="js/jquery.js" type="text/javascript"></script>
+      <script src="js/admin.js" type="text/javascript"></script>
+      <script src="js/exhibitor.js" type="text/javascript"></script>
+      <script type="text/javascript" src="cordova.js"></script>
+      <script src="js/loginrequierd.js" type="text/javascript"></script>
+      <script src="js/sweetalert/dist/sweetalert.min.js" type="text/javascript"></script>
+
+    </body>
+</html>

@@ -66,7 +66,7 @@ function addItem(data){
                 <div class="changeInfo">Redigera Info</div>\
                 <section class="overlay"></section>\
                 <div class="showMe">\
-                    <p>"' + dataList[i].comment + '"</p>\
+                    <p>' + dataList[i].comment + '</p>\
                     <table>\
                     <thead>\
                           <tr>\

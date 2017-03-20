@@ -1,13 +1,15 @@
 <?xml version='1.0' encoding='utf-8'?>
+<preference name="orientation" value="portrait" />
 <widget id="com.phonegap.helloworld" version="1.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>App</name>
+    <name>AV-media app</name>
     <description>
-        A blank PhoneGap app.
+        Event app for communication between attendants and exhibitors at an specific event.
     </description>
-    <author email="support@phonegap.com" href="http://phonegap.com">
-        PhoneGap Team
+    <author email="jcbpettersson@gmail.com" href="none">
+        TuT Team
     </author>
     <content src="index.html" />
     <access origin="*" />
     <plugin name="phonegap-plugin-barcodescanner" spec="~6.0.5" />
+    <engine name="ios" spec="~4.3.1" />
 </widget>
