@@ -4,12 +4,14 @@
         <param name="browser-package" value="BarcodeScanner" />
     </feature>
     <name>AV-media app</name>
+    <icon src="img/icon.png" />
     <description>
-        Event app for communication between attendants and exhibitors at an specific event.
+        Skanna besökare och håll koll på dina kontaker.
     </description>
     <author email="jcbpettersson@gmail.com" href="none">
         TuT Team
     </author>
     <content src="index.html" />
     <access origin="*" />
+    <preference name="orientation" value="portrait" />
 </widget>
