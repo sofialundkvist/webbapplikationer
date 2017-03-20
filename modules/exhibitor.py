@@ -99,11 +99,6 @@ class Exhibitor(User):
         else:
             return False
 
-    def delete(self, session):
-        session.delete(self)
-        session.commit()
-        return True
-
     def set_last_logged_in(self, session):
         self.last_logged_in = datetime.datetime.now()
         session.query(Exhibitor).filter_by(id = self.id).update({'last_logged_in':self.last_logged_in})
@@ -125,32 +120,7 @@ class Exhibitor(User):
             data['connections'].append(connection.get_data())
         return data
 
-
-    @classmethod
-    def create(cls, session,  company_name, email):
-        validation_dict = {
-            'exists': cls.is_attending(session, email),
-            'email': Validator.email(email),
-            'company_name': Validator.is_empty(company_name),
-        }
-
-        for key, value in validation_dict.items():
-            if not value:
-                return False, validation_dict
-
-        exhibitor = Exhibitor(company_name, email)
-        message = {"email": email, "password": "Massa2017"}
-        session.add(exhibitor)
-        session.flush()
-        exhibitor.create_lables(session)
-        return True, 'Skapad'
-
     @classmethod
     def get_exhibitor(cls, session, id):
         result = session.query(Exhibitor).filter_by(id=id).first()
-        return result
-
-    @classmethod
-    def get_all_exhibitors(cls, session):
-        result = session.query(Exhibitor).filter_by(auth_level=1).all()
         return result

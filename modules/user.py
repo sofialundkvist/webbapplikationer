@@ -34,37 +34,8 @@ class User(Base):
         self.auth_level = auth_level
         self.authenticated = False
 
-    def set_password(self, session, password):
-        new_password = self.hash_password(password)
-        session.query(User).filter_by(id = self.id).update({'password':new_password})
-        session.commit()
-
-    def deactivte_url(self, session):
-        session.query(User).filter_by(id = self.id).update({'reset_url':None, 'url_time':None})
-        session.commit()
-
-    def forgotten_password(self, session):
-        url_wildcard = str(''.join(random.choice(string.ascii_lowercase + string.digits) for i in range(64)))
-        timestamp = datetime.datetime.now()
-        session.query(User).filter_by(id = self.id).update({'reset_url':url_wildcard, 'url_time':timestamp})
-        session.commit()
-        link = "https://massa.avmediaskane.se/glomt_losenord/" + url_wildcard # Ändra till absolut sökväg på servern
-        message = {"link": link}
-
-    def get_auth_level(self):
-        return self.auth_level
-
-    def get_email(self):
-        return self.email
-
     def get_password(self):
         return self.password
-
-    def validate_url_time(self):
-        if self.url_time > datetime.datetime.now()-datetime.timedelta(minutes=60):
-            return True
-        else:
-            return False
 
     def generate_key(self, session):
         key = str(''.join(random.choice(string.ascii_uppercase + string.digits) for i in range(16)))
@@ -76,12 +47,12 @@ class User(Base):
         session.query(User).filter_by(id = self.id).update({'session_token':key})
         session.commit()
 
-    def log_out(self, session):
+    '''def log_out(self, session):
         self.authenticated = False
         self.session_token = "none"
         session.query(User).filter_by(id = self.id).update({'authenticated':self.authenticated})
         session.query(User).filter_by(id = self.id).update({'session_token':self.session_token})
-        session.commit()
+        session.commit()'''
 
     def is_authenticated(self, token):
         if token == self.session_token:
@@ -99,11 +70,6 @@ class User(Base):
         ''' Returns session token '''
         return self.session_token
 
-    def send_new_email(self):
-        pwd = 'Massa2017'
-        if self.password != self.hash_password(pwd):
-            pwd = 'Du har satt ett eget lösenord.'
-
     @classmethod
     def is_attending(cls, session, email):
         exists = session.query(User).filter_by(email=email).first()
@@ -111,12 +77,6 @@ class User(Base):
             return False
         else:
             return True
-
-    @classmethod
-    def get_user_by_url(cls, session, url):
-        user = session.query(User).filter_by(reset_url=url).first()
-        if user:
-            return user
 
     @classmethod
     def log_in(cls, session, email, user_psw):
@@ -141,12 +101,3 @@ class User(Base):
         ''' Get user by email '''
         user = session.query(User).filter_by(email=email).first()
         return user
-
-    @staticmethod
-    def get_user_by_id(session, user_id):
-        ''' Get user by id '''
-        user = session.query(User).filter_by(id=user_id).first()
-        if user is not None:
-            return user
-        else:
-            return None

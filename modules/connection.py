@@ -64,12 +64,6 @@ class Connection(Base):
         connections = session.query(Connection).filter_by(exhibitor=exhibitor_id).all()
         return connections
 
-    @classmethod
-    def get_every_connection(cls, session):
-        result = session.query(Connection).all()
-        return result
-
-
 class Label_to_Connection(Base):
     __tablename__ = 'label_to_connection'
     __table_args__ = {'extend_existing':True}
