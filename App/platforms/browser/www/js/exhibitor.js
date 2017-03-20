@@ -119,7 +119,7 @@ function show_hide_labels(){
     else{
         $(handleMyLabels).addClass('openHandleTags');
         $(handleMyLabels).text( function(){
-            return "Ändra taggar"
+            return "Spara nya taggar"
         });
         $(handleMyLabels).css('background-color', '#21D3A5')
     }
@@ -200,7 +200,11 @@ function AjaxQR(x){
                         <h3>' + json.connections.attendant.first_name + ' tillagd i dina kontakter ✓</h3>\
                         <div id="addInfo">Lägg till kommentar</div>\
                         <section id="infoBox">\
+<<<<<<< HEAD
                         <div id="handleEveryLabel" class="openHandleTags">Ändra taggar</div>\
+=======
+                        <div id="handleEveryLabel">Lägg till nya taggar</div>\
+>>>>>>> origin/master
                             <div id="edithLabels">\
                                 <ul id="completeLabelList">\
                                     <li class="tags" id="addTagBtn"><div id="addLabel">Ny Tagg<div id="plus">+</div></div></li>\
@@ -434,6 +438,16 @@ $( document ).ready(function(){
     document.addEventListener("deviceready", onDeviceReady, false);
 });
 
+$(document).on('keydown', '#searchField', function (event) {
+    $('#searchField').keydown(function() {
+    if($(this).val().length > 4) {
+         $('#qr-image').hide();
+    } else {
+         $('#qr-image').show();
+    }
+    });
+});
+
 
 
 
@@ -445,7 +459,7 @@ $( document ).ready(function(){
 
 function onDeviceReady() {
 
-    $('#starScan').click(function(){
+    $('.scanner').click(function(){
         console.log('klick!')
         cordova.plugins.barcodeScanner.scan(
               function (result) {
