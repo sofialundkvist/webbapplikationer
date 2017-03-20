@@ -117,7 +117,7 @@ function show_hide_labels(){
     else{
         $(handleMyLabels).addClass('openHandleTags');
         $(handleMyLabels).text( function(){
-            return "Ändra taggar"
+            return "Spara nya taggar"
         });
         $(handleMyLabels).css('background-color', '#21D3A5')
     }
@@ -198,7 +198,7 @@ function AjaxQR(x){
                         <h3>' + json.connections.attendant.first_name + ' tillagd i dina kontakter ✓</h3>\
                         <div id="addInfo">Lägg till kommentar</div>\
                         <section id="infoBox">\
-                        <div id="handleEveryLabel">Ändra taggar</div>\
+                        <div id="handleEveryLabel">Lägg till nya taggar</div>\
                             <div id="edithLabels">\
                                 <ul id="completeLabelList">\
                                     <li class="tags" id="addTagBtn"><div id="addLabel">Ny Tagg<div id="plus">+</div></div></li>\
