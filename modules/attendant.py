@@ -37,15 +37,15 @@ class Attendant(Base):
         self.profession = contact_info['profession']
         self.front_end_id = self.set_front_end_id()
 
-    def set_subjects(self, subjects):
-        attendant_id = self.get_id()
+    def set_subjects(self, session, subjects):
+        attendant_id = self.get_id(session)
         for subject in subjects:
             subjecter = Subject(subject, self)
             session.add(subjecter)
             session.commit()
 
-    def set_teach_years(self, years):
-        attendant_id = self.get_id()
+    def set_teach_years(self, session,  years):
+        attendant_id = self.get_id(session)
         for year in years:
             yearer = Teaching_year(year, self)
             session.add(yearer)
@@ -72,13 +72,13 @@ class Attendant(Base):
     def get_front_end_id(self):
         return self.front_end_id
 
-    def get_id(self):
+    def get_id(self, session):
         user_id = session.query(Attendant).filter_by(email=self.email).first()
         return user_id.id
 
-    def get_data(self):
-        subjects = self.get_subjects()
-        teaching_years = self.get_teaching_years()
+    def get_data(self, session):
+        subjects = self.get_subjects(session)
+        teaching_years = self.get_teaching_years(session)
         return {
         'id':self.id,
         'front_end_id':self.front_end_id,
@@ -92,20 +92,16 @@ class Attendant(Base):
         'teaching_years':teaching_years
         }
 
-    def get_subjects(self):
-        session = Session()
+    def get_subjects(self, session):
         subjects = session.query(Subject).filter_by(attendant_id=self.id).all()
-        session.close()
         subjects_text = []
         for subject in subjects:
             subject_text = subject.get_subject_text()
             subjects_text.append(subject_text)
         return subjects_text
 
-    def get_teaching_years(self):
-        session = Session()
+    def get_teaching_years(self, session):
         years = session.query(Teaching_year).filter_by(attendant_id=self.id).all()
-        session.close()
         years_2 = []
         for year in years:
             years_2.append(year.get_year())
@@ -118,8 +114,8 @@ class Attendant(Base):
             self.birth_month = "0" + self.birth_day
         return self.first_name[0] + self.surname[0] + str(self.birth_month) + str(self.birth_day)
 
-    def generate_qr(self):
-        user_id = self.get_id()
+    def generate_qr(self, session):
+        user_id = self.get_id(session)
         img = qrcode.make('https://doltishkey.pythonanywhere.com/attendant/'+self.front_end_id+'/'+str(user_id))
 
         img.filename = str(''.join(random.choice(string.ascii_uppercase + string.digits) for i in range(16)))+'.png'
@@ -142,12 +138,9 @@ class Attendant(Base):
 
 
 
-    def delete(self):
-        global session
-        session = Session()
+    def delete(self, session):
         session.delete(self)
         session.commit()
-        session.close()
 
     @classmethod
     def check_month(cls, month):
@@ -172,13 +165,13 @@ class Attendant(Base):
             return False
 
     @classmethod
-    def create(cls, contact_info):
+    def create(cls, session, contact_info):
         if not contact_info['day']:
             contact_info['day'] = 'Finns inte'
 
         # Validering
         validation_dict = {
-        'exists': cls.is_attending(contact_info['email']),
+        'exists': cls.is_attending(session, contact_info['email']),
         'first_name': Validator.is_empty(contact_info['first_name']),
         'surname': Validator.is_empty(contact_info['surname']),
         'email': Validator.email(contact_info['email']),
@@ -194,14 +187,12 @@ class Attendant(Base):
         contact_info['list_subjects'] = Validator.remove_empty(contact_info['list_subjects'])
         contact_info['list_years'] = Validator.remove_empty(contact_info['list_years'])
 
-        global session
-        session = Session()
         attendant = Attendant(contact_info)
         session.add(attendant)
         session.flush()
-        attendant.set_subjects(contact_info['list_subjects'])
-        attendant.set_teach_years(contact_info['list_years'])
-        attendant_qr = attendant.generate_qr()
+        attendant.set_subjects(session, contact_info['list_subjects'])
+        attendant.set_teach_years(session, contact_info['list_years'])
+        attendant_qr = attendant.generate_qr(session)
         message={
             'name': attendant.get_name(),
             'front_end_id': attendant.get_front_end_id(),
@@ -213,55 +204,37 @@ class Attendant(Base):
             'id':attendant.id
         }
         session.commit()
-        session.close()
-
         return True, return_data
 
     @classmethod
-    def is_attending(cls, email):
-        global session
-        session = Session()
+    def is_attending(cls, session, email):
         exists = session.query(Attendant).filter_by(email=email).first()
-        session.close()
         if exists:
             return False
         else:
             return True
 
     @classmethod
-    def get_user(cls,id):
-        global session
-        session = Session()
+    def get_user(cls, session,id):
         result = session.query(Attendant).filter_by(id=id).first()
-        session.close()
         return result
 
     @classmethod
-    def get_user_multi(cls, front_end_id, id):
-        global session
-        session = Session()
+    def get_user_multi(cls, session, front_end_id, id):
         result = session.query(Attendant).filter_by(id=id).filter_by(front_end_id=front_end_id).first()
-        session.expunge_all()
-        session.close()
         return result
 
     @classmethod
-    def get_from_front_id(cls, front_end_id):
-        global session
-        session = Session()
+    def get_from_front_id(cls, session, front_end_id):
         attendants = session.query(Attendant).filter_by(front_end_id=front_end_id).all()
         attendant_list =[]
         for attendant in attendants:
-            attendant_list.append(attendant.get_data())
-        session.close()
+            attendant_list.append(attendant.get_data(session))
         return attendant_list
 
     @classmethod
-    def get_all_attendants(cls):
-        global session
-        session = Session()
+    def get_all_attendants(cls, session):
         result = session.query(Attendant).all()
-        session.close()
         return result
 
 class Subject(Base):

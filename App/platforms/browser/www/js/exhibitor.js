@@ -185,6 +185,7 @@ function AjaxQR(x){
         type: 'POST',
         url:x,
         success: function(response){
+            console.log(response)
             var json = $.parseJSON(response);
             if (json !== false){
                 var labels = $.parseJSON(json.labels);

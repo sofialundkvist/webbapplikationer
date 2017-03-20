@@ -21,42 +21,27 @@ class Connection(Base):
     def get_exhibitor(self):
         return self.exhibitor
 
-    def add_comment(self, comment):
-        global session
-        session = Session()
+    def add_comment(self, session, comment):
         session.query(Connection).filter_by(id = self.id).update({'comment':comment})
         session.flush()
         session.commit()
-        session.close()
 
-    def add_label(self, label):
-        global session
-        session = Session()
+    def add_label(self, session, label):
         label_connection = Label_to_Connection(label.id, self.id)
         session.add(label_connection)
         session.commit()
-        session.close()
 
-    def get_labels(self):
-        global session
-        session = Session()
+    def get_labels(self, session):
         labels = session.query(Label).join(Label_to_Connection).filter_by(connection_id=self.id).all()
-        session.expunge_all()
-        session.close()
         return labels
 
-    def get_data(self):
-        labels = self.get_labels()
-        session = Session()
-
+    def get_data(self, session):
+        labels = self.get_labels(session)
         attendant = session.query(Attendant).filter_by(id=self.attendant_id).first()
-        session.expunge_all()
-        session.close()
-
         connection_data = {
             'comment': self.comment,
             'labels':[],
-            'attendant': attendant.get_data(),
+            'attendant': attendant.get_data(session),
             'id':self.id
         }
         for label in labels:
@@ -65,37 +50,23 @@ class Connection(Base):
 
 
     @classmethod
-    def get_connection(cls, connection_id):
-        global session
-        session = Session()
+    def get_connection(cls, session, connection_id):
         connection = session.query(Connection).filter_by(id=connection_id).first()
-        session.expunge_all()
-        session.close()
         return connection
 
     @classmethod
-    def get_connection_by_users(cls, exhibitor_id, attendant_id):
-        global session
-        session = Session()
+    def get_connection_by_users(cls, session, exhibitor_id, attendant_id):
         connection = session.query(Connection).filter_by(exhibitor=exhibitor_id).filter_by(attendant_id = attendant_id).first()
-        session.expunge_all()
-        session.close()
         return connection
 
     @classmethod
-    def get_all_connections(cls, exhibitor_id):
-        global session
-        session = Session()
+    def get_all_connections(cls, session, exhibitor_id):
         connections = session.query(Connection).filter_by(exhibitor=exhibitor_id).all()
-        session.close()
         return connections
 
     @classmethod
-    def get_every_connection(cls):
-        global session
-        session = Session()
+    def get_every_connection(cls, session):
         result = session.query(Connection).all()
-        session.close()
         return result
 
 
@@ -112,10 +83,7 @@ class Label_to_Connection(Base):
 
 
     @classmethod
-    def remove(cls, connection_id):
-        global session
-        session = Session()
+    def remove(cls, session, connection_id):
         connections = session.query(Label_to_Connection).filter_by(connection_id=connection_id).delete()
         session.commit()
-        session.close()
         return connections

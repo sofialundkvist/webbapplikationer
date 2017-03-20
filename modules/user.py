@@ -34,29 +34,20 @@ class User(Base):
         self.auth_level = auth_level
         self.authenticated = False
 
-    def set_password(self, password):
+    def set_password(self, session, password):
         new_password = self.hash_password(password)
-        global session
-        session = Session()
         session.query(User).filter_by(id = self.id).update({'password':new_password})
         session.commit()
-        session.close()
 
-    def deactivte_url(self):
-        global session
-        session = Session()
+    def deactivte_url(self, session):
         session.query(User).filter_by(id = self.id).update({'reset_url':None, 'url_time':None})
         session.commit()
-        session.close()
 
-    def forgotten_password(self):
+    def forgotten_password(self, session):
         url_wildcard = str(''.join(random.choice(string.ascii_lowercase + string.digits) for i in range(64)))
         timestamp = datetime.datetime.now()
-        global session
-        session = Session()
         session.query(User).filter_by(id = self.id).update({'reset_url':url_wildcard, 'url_time':timestamp})
         session.commit()
-        session.close()
         link = "https://massa.avmediaskane.se/glomt_losenord/" + url_wildcard # Ändra till absolut sökväg på servern
         message = {"link": link}
 
@@ -75,26 +66,22 @@ class User(Base):
         else:
             return False
 
-    def generate_key(self):
+    def generate_key(self, session):
         key = str(''.join(random.choice(string.ascii_uppercase + string.digits) for i in range(16)))
-        self.set_key(key)
+        self.set_key(session, key)
         return key
 
-    def set_key(self, key):
-        session = Session()
+    def set_key(self, session, key):
         self.session_token = key
         session.query(User).filter_by(id = self.id).update({'session_token':key})
         session.commit()
-        session.close()
 
-    def log_out(self):
-        session = Session()
+    def log_out(self, session):
         self.authenticated = False
         self.session_token = "none"
         session.query(User).filter_by(id = self.id).update({'authenticated':self.authenticated})
         session.query(User).filter_by(id = self.id).update({'session_token':self.session_token})
         session.commit()
-        session.close()
 
     def is_authenticated(self, token):
         if token == self.session_token:
@@ -118,38 +105,30 @@ class User(Base):
             pwd = 'Du har satt ett eget lösenord.'
 
     @classmethod
-    def is_attending(cls, email):
-        global session
-        session = Session()
+    def is_attending(cls, session, email):
         exists = session.query(User).filter_by(email=email).first()
-        session.close()
         if exists:
             return False
         else:
             return True
 
     @classmethod
-    def get_user_by_url(cls, url):
-        global session
-        session = Session()
+    def get_user_by_url(cls, session, url):
         user = session.query(User).filter_by(reset_url=url).first()
-        session.close()
         if user:
             return user
 
     @classmethod
-    def log_in(cls, email, user_psw):
-        user = cls.get_user(email)
+    def log_in(cls, session, email, user_psw):
+        user = cls.get_user(session, email)
         if user is not None:
             if user_psw == user.password:
-                session = Session()
                 user.authenticated = True
                 user.session_token = urandom(8)
                 user.session_token = str(user.session_token)
                 session.query(User).filter_by(id = user.id).update({'authenticated':user.authenticated})
                 session.query(User).filter_by(id = user.id).update({'session_token':user.session_token})
                 session.commit()
-                session.close()
                 return user
         return None
 
@@ -158,19 +137,15 @@ class User(Base):
         return hashlib.sha256(password.encode('utf-8')).hexdigest()
 
     @classmethod
-    def get_user(cls, email):
+    def get_user(cls, session, email):
         ''' Get user by email '''
-        session = Session()
         user = session.query(User).filter_by(email=email).first()
-        session.close()
         return user
 
     @staticmethod
-    def get_user_by_id(user_id):
+    def get_user_by_id(session, user_id):
         ''' Get user by id '''
-        session = Session()
         user = session.query(User).filter_by(id=user_id).first()
-        session.close()
         if user is not None:
             return user
         else:

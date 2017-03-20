@@ -23,40 +23,28 @@ class Label(Base):
     def get_exhibitor(self):
         return self.exhibitor_id
 
-    def set_text(self, text):
-        global session
-        session = Session()
+    def set_text(self, session, text):
         session.query(Label).filter_by(id = self.id).update({'label':text})
         session.commit()
-        session.close()
 
-    def set_color(self, color):
-        global session
-        session = Session()
+    def set_color(self, session, color):
         session.query(Label).filter_by(id = self.id).update({'color':color})
         session.commit()
-        session.close()
 
-    def update(self, text, color):
+    def update(self,session, text, color):
 
         if self.label != text:
-            self.set_text(text)
+            self.set_text(session, text)
 
         if self.color != color:
-            self.set_color(color)
+            self.set_color(session, color)
 
-    def delete(self):
-        global session
-        session = Session()
+    def delete(self, session):
         session.delete(self)
         session.commit()
-        session.close()
         return True
 
     @classmethod
-    def get_label(cls,id):
-        global session
-        session = Session()
+    def get_label(cls, session, id):
         result = session.query(Label).filter_by(id=id).first()
-        session.close()
         return result
