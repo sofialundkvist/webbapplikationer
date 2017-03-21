@@ -12,6 +12,7 @@ function infoUpdatedFeedback(){
     });
 };
 
+
 function saveConnectionInfo(ConnectionInfo, ConnectionId){
     console.log('ajax för att spara!')
     $.ajax({
