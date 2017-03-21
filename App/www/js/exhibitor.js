@@ -419,22 +419,6 @@ var User = (function(){
     }
 }());
 
-
-$( document ).ready(function(){
-    searchForAttendant();
-    addLable.eventHandlers()
-    deleteLabel.eventHandler()
-    User.getInfo()
-
-
-
-    console.log('Körs!!')
-    $('#starScan').click(function(){
-        console.log('klickad!')
-    });
-    document.addEventListener("deviceready", onDeviceReady, false);
-});
-
 $(document).on('keydown', '#searchField', function (event) {
     $('#searchField').keydown(function() {
     if($(this).val().length > 4) {
@@ -444,15 +428,6 @@ $(document).on('keydown', '#searchField', function (event) {
     }
     });
 });
-
-
-
-
-
-
-
-
-
 
 function onDeviceReady() {
 
@@ -485,4 +460,13 @@ function onDeviceReady() {
 
 $(".addIcon").on("click", function(){
   $(this).css("filter", "grayscale(0%)");
+});
+
+
+$( document ).ready(function(){
+    searchForAttendant();
+    addLable.eventHandlers()
+    deleteLabel.eventHandler()
+    User.getInfo()
+    document.addEventListener("deviceready", onDeviceReady, false);
 });
