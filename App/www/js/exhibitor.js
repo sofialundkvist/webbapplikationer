@@ -1,4 +1,7 @@
+/* JS for the exhibititors QR-SCANNER-view*/
+
 function infoUpdatedFeedback(){
+    /* When connection info is succesfully saved: Sweetalerts-feedback*/
     swal({
         title: "Kontakt Uppdaterad",
         type: "success",
@@ -14,7 +17,6 @@ function infoUpdatedFeedback(){
 
 
 function saveConnectionInfo(ConnectionInfo, ConnectionId){
-    console.log('ajax för att spara!')
     $.ajax({
         headers: User.getInfo(),
         type: 'POST',
@@ -22,7 +24,6 @@ function saveConnectionInfo(ConnectionInfo, ConnectionId){
         url:'https://doltishkey.pythonanywhere.com/connection/'+ ConnectionId,
         traditional: true,
         success: function(response){
-            console.log(response)
             json = $.parseJSON(response);
             if ( json == true){
                 infoUpdatedFeedback();
@@ -38,14 +39,12 @@ function saveConnectionInfo(ConnectionInfo, ConnectionId){
 
 
 function AjaxFrontEndId(id){
-    console.log('körAjaxFrontEndId')
+    /* When the searchfield user input is valid: a list of all attendants with the given ID is provided */
     $.ajax({
         headers: User.getInfo(),
         type: 'GET',
         url: 'https://doltishkey.pythonanywhere.com/attendant/' + id + '/',
         success: function(response){
-            console.log('Success med front_end_id!')
-            console.log(response)
             var json = $.parseJSON(response);
             if ( json !== false){
                 $('#result ul').empty();
@@ -56,7 +55,6 @@ function AjaxFrontEndId(id){
                 });
 
                 $('#searchField').blur();
-
                 $('#result ul li').click(function(){
                     /* För LIVE-VERSION
                     var theURL = 'https://doltishkey.pythonanywhere.com/attendant/' + $(this).attr('data-frontendid') + '/' + $(this).attr('data-userid');
@@ -74,7 +72,6 @@ function AjaxFrontEndId(id){
             }
         },
         error: function(){
-            console.log('Fel med front_end_id!')
             $('#alertMessage').text(function(){
                 $('#result ul').empty();
                 return 'Något gick fel. Ladda om sidan'
@@ -84,6 +81,7 @@ function AjaxFrontEndId(id){
 };
 
 function doLabelList(obj){
+    /* Returns a list of tag-IDs korrensponding to the connection */
     var theList = []
     $.each(obj, function(i, tag){
         theList.push(tag.id);
@@ -110,12 +108,12 @@ function show_hide_labels(){
     var formTags = $('#connectionForm').find('#tags');
     var myTags = $('#edithLabels');
 
-    if( $(handleMyLabels).attr('class') == 'openHandleTags'){
+    if( $(handleMyLabels).attr('class') == 'openHandleTags' ){
         $(handleMyLabels).removeClass('openHandleTags');
         $(handleMyLabels).text(function(){
             return 'Spara nya taggar'
         });
-        $(handleMyLabels).css('background-color', '#0EB183')
+        $(handleMyLabels).css('background-color', '#0EB183');
     }
     else{
         $(handleMyLabels).addClass('openHandleTags');
@@ -131,7 +129,8 @@ function show_hide_labels(){
 
 
 function labelsOnConnection(myLabels, labelList){
-    $.each(myLabels, function(index, label){
+    /* Provides a list of all the labels and the ones that is currently on a connection*/
+    $.each( myLabels, function(index, label) {
         $('#completeLabelList').prepend('<li data-id="'+label.id+'" class="tags">\
             <p>'+label.text+'</p>\
             <div class="deleteLabel">X</div>\
@@ -149,12 +148,6 @@ function labelsOnConnection(myLabels, labelList){
             </li>');
         }
     });
-};
-
-
-function show_hide_info(){
-    $('#handleEveryLabel').toggle(300);
-    $('#infoBox').slideToggle(300);
 };
 
 
@@ -181,19 +174,17 @@ function chooseLabel(thisobj){
 
 
 function AjaxQR(x){
-    console.log('körs')
-    console.log(x)
+    /* x = the URL provided from AjaxFrontEndId or the QR code. */
     $.ajax({
         headers: User.getInfo(),
         type: 'POST',
         url:x,
         success: function(response){
-            console.log(response)
             var json = $.parseJSON(response);
-            if (json !== false){
+            if ( json !== false ){
                 var labels = $.parseJSON(json.labels);
                 var comments = json.connections.comment;
-                if (comments == null){
+                if ( comments == null ){
                     var comments = "";
                 }
                 $('main').html('<section  class="QR">\
@@ -230,7 +221,6 @@ function AjaxQR(x){
                 labelsOnConnection(labels, labelList);
 
                 $('#saveInfoBtn').click(function(){
-                    console.log('Spara!')
                     saveInfo(json.connections.id);
                 });
 
@@ -239,8 +229,6 @@ function AjaxQR(x){
                 });
                 addLable.eventHandlers();
                 deleteLabel.eventHandler();
-                return;
-
             }
             else{
                 $('#alertMessage').text(function(){
@@ -248,10 +236,8 @@ function AjaxQR(x){
                     return "Något gick fel. Försök igen"
                 });
             }
-            return;
         },
         error: function(){
-            console.log('ajax krasha');
             window.location.href = '/utstallare/qr'
         }
     });
@@ -259,6 +245,7 @@ function AjaxQR(x){
 
 
 function validateAttendantID(input){
+    /* check that the sign 3 to 6 is integers and sign 1-2 are letters */
     var checkNumbers = parseInt(input.substring(2,4)) + parseInt(input.substring(4,7));
     if ( Number.isInteger(checkNumbers) && !(Number.isInteger(parseInt(input.substring(0,2))))){
         return true;
@@ -270,20 +257,19 @@ function validateAttendantID(input){
 
 
 function searchForAttendant(){
+    /* When user input >= 6: Validate the first 6 signs of the user input */
     $('#searchSection').submit(function(event){
         event.preventDefault(event)
     });
 
     $('#searchField').keyup(function    (){
         var inputVal = this.value;
-
-        if ( inputVal.length >= 6){
+        if ( inputVal.length >= 6 ){
             var sixthFirst = inputVal.substring(0,6);
             var valInput = validateAttendantID(sixthFirst)
-            if ( valInput == true){
+            if ( valInput == true ){
                 $('#result ul').empty();
                 AjaxFrontEndId(sixthFirst);
-                return;
             }
             else{
                 $('#result ul').empty();
@@ -293,7 +279,7 @@ function searchForAttendant(){
             };
 
         }
-        else if ( inputVal.length <= 5){
+        else if ( inputVal.length <= 5 ){
             $('#result ul').empty();
             $('#alertMessage').text(function(){
                 return 'Skanna QR eller ange ID'
@@ -301,6 +287,7 @@ function searchForAttendant(){
         };
     });
 };
+
 
 var addLable = (function(){
 
@@ -426,14 +413,12 @@ $( document ).ready(function(){
     deleteLabel.eventHandler()
     User.getInfo()
 
-
-
-    console.log('Körs!!')
     $('#starScan').click(function(){
         console.log('klickad!')
     });
     document.addEventListener("deviceready", onDeviceReady, false);
 });
+
 
 $(document).on('keydown', '#searchField', function (event) {
     $('#searchField').keydown(function() {
@@ -446,21 +431,10 @@ $(document).on('keydown', '#searchField', function (event) {
 });
 
 
-
-
-
-
-
-
-
-
 function onDeviceReady() {
-
     $('.scanner').click(function(){
-        console.log('klick!')
         cordova.plugins.barcodeScanner.scan(
               function (result) {
-                  console.log('Ska skicka qr')
                   AjaxQR(result.text);
               },
               function (error) {

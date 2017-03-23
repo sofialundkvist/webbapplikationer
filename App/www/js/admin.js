@@ -1,7 +1,6 @@
-var dataList = [];
+/*JS for exhibitors 'Contacts'-view */
 
 function getItems() {
-    console.log('vill hämta kontakter')
     $.ajax({
         headers: User.getInfo(),
         url: 'https://doltishkey.pythonanywhere.com/exhibitor/contacts',
@@ -18,9 +17,8 @@ function getItems() {
 
 
 function addItem(data){
-
-    dataList = data['connections'];
-    myLabels = data['labels'];
+    var dataList = data['connections'];
+    var myLabels = data['labels'];
 
     function compare(a,b) {
           if (a.attendant.first_name < b.attendant.first_name)
@@ -34,22 +32,23 @@ function addItem(data){
     //console.log(dataList[0].attendant.email);
 
     for(i = 0; i < dataList.length; i++){
-        if (dataList[i].comment == null) {
+        var labels = []
+        var labelText = []
+        var labelString = JSON.stringify(labels)
+
+        if ( dataList[i].comment == null ) {
             dataList[i].comment = ''
         }
-        labels = []
-        labelText = []
-        if( dataList[i].labels.length > 0){
+
+        if ( dataList[i].labels.length > 0){
             dataLabels = dataList[i].labels
-            for (j = 0; j < dataLabels.length; j++){
+            for ( j = 0; j < dataLabels.length; j++ ){
                 labels.push(dataLabels[j]['id']);
                 labelText.push(' ' + dataLabels[j]['text']);
             };
         };
 
-        labelString = JSON.stringify(labels)
-
-        if(labelText.length > 0){
+        if ( labelText.length > 0 ){
             labelTextItem = 'Taggar:' + labelText
         }
         else{
@@ -105,6 +104,7 @@ function addItem(data){
     $('.visitorName').click(function(){
         toggleDisplay(this);
     })
+
     $('.changeInfo').hide();
     $('.overlay').hide();
 
@@ -112,8 +112,8 @@ function addItem(data){
         var thisParent = event.target.parentNode;
         var frontendID = $(thisParent).attr('data-frontEnd-id');
         var backendID = $(thisParent).attr('data-id');
-        for (k = 0; k < dataList.length; k++){
-            if (dataList[k].attendant.id == backendID){
+        for ( k = 0; k < dataList.length; k++ ){
+            if ( dataList[k].attendant.id == backendID ){
                 editInfo(dataList[k], myLabels, thisParent);
             }
         }
@@ -121,7 +121,7 @@ function addItem(data){
 };
 
 
-function editInfo(connections, myLabels, parentObj, clicked_button){
+function editInfo(connections, myLabels, parentObj){
     var myVar = $(parentObj).find('.overlay');
     $(myVar).html('<div id="close-overlay"></div>\
             <div id="handleEveryLabel" class="openHandleTags">Lägg till nya taggar</div>\
@@ -146,27 +146,28 @@ function editInfo(connections, myLabels, parentObj, clicked_button){
     });
     $(myVar).slideToggle(300);
 
-    hideLabelMenu();
-    show_hide_info();
+    hideLabelMenu(); //Found in exhibStyle.js
+    show_hide_info(); //Found in exhibSTyle.js
     $('#handleEveryLabel').on('click',function(){
         show_hide_labels();
     });
 
     var myLabels = $.parseJSON(myLabels);
-    connectionLabels = doLabelList(connections.labels)
-    labelsOnConnection(myLabels, connectionLabels);
+    var connectionLabels = doLabelList(connections.labels)
+    labelsOnConnection(myLabels, connectionLabels); //Found in exhibStyle.js
 
     $('#saveInfoBtn').click(function(){
-        saveInfo(connections.id);
+        saveInfo(connections.id); //Found in exhibStyle.js
     });
 
     $('#connectionForm').find('#tags').on('click', '.tags', function(){
-        chooseLabel($(this));
+        chooseLabel($(this)); //Found in exhibStyle.js
     });
-    addLable.eventHandlers();
-    deleteLabel.eventHandler();
+    addLable.eventHandlers(); //Found in exhibStyle.js
+    deleteLabel.eventHandler(); //Found in exhibStyle.js
     return;
 };
+
 
 //Visar en bekräftelse på att användaren vill ta bort utställare/besökare
 function confirmDelete() {
@@ -199,14 +200,9 @@ function confirmDelete() {
                 swal("Avbruten", "Ingenting togs bort", "success");   } });
 }
 
-//Tar bort utställare/besökare
-function deleteItem(item) {
-    console.log('Användaren togs bort på låtsas');
-}
 
 //Confirmbox för att skicka mail till utställare/besökare
 function confirmEmail(item) {
-
     var clickedItem = item.parentNode.childNodes[2];
     var user = item.parentNode.childNodes[1];
     var mail = $(clickedItem).text();
@@ -232,14 +228,13 @@ function confirmEmail(item) {
                 swal("Avbruten", "Ingenting skickades", "success");   } });
 }
 
+
 //Skicka mail till vald utställare/besökare från listan
 function sendEmail(item) {
-
     var clickedItem = item.parentNode.childNodes[2];
     var mail = $(clickedItem).text();
-
-    console.log(mail);
 }
+
 
 //Visar innehåll för ett specifikt list item
 function toggleDisplay(clicked) {
@@ -248,16 +243,17 @@ function toggleDisplay(clicked) {
     $(myParent).find(".changeInfo").slideToggle(200, 'linear');
 };
 
+
 //Ta bort tagg
 $(document).ready(function(){
     $(".tags").on("taphold",function(){
         var answer = confirm("Är du säker på att du vill ta bort denna tagg?");
         if (answer == true) {
             $(this).remove();
-        } else {
-        }
+        };
   });
 });
+
 
 //Filtrera efter tagg
 $(document).ready(function(){
@@ -266,28 +262,17 @@ $(document).ready(function(){
         var tagName = $(this).text();
 
         selectedTags.push(tagName);
-        console.log(selectedTags);
-
 
         if (selectedTags === undefined || selectedTags.length == 0) {
             selectedTags.push(tagName);
-            console.log('Sparat!');
-        } else if (selectedTags.includes(tagName)) {
+        } else if ( selectedTags.includes(tagName) ) {
             selectedTags.splice(tagName);
-            console.log('Borttaget');
         } else {
             selectedTags.push(tagName);
-            console.log('Sparat!');
-                        }
-    console.log(selectedTags);
+        }
     });
 });
 
-        /*for (var i = 0; i < dataList.length; i++) {
-            if (dataList[i].attendant.subjects == tagName) {
-                console.log(dataList[i]);
-            }
-        }*/
 
 var label = (function(){
 
@@ -309,11 +294,11 @@ var label = (function(){
         $('.tags').click(function(){
             clicked = $(this).data('label-val')
             indexOfCliked = $.inArray(clicked, state.labelDisplay);
-            if(indexOfCliked == -1){
+            if( indexOfCliked == -1 ){
                 state.labelDisplay.push($(this).data('label-val'));
                 $(this).addClass('active')
             }
-            else{
+            else {
                 state.labelDisplay.splice(indexOfCliked, 1)
                 $(this).removeClass('active')
             }
@@ -324,38 +309,30 @@ var label = (function(){
     var updateContactList = function(){
         contacts = $('#VisitorInfo').find('li')
         $(contacts).each(function(){
-            if(state.labelDisplay.length == 0){
+            if ( state.labelDisplay.length == 0 ){
                 $(this).show();
             }
-            else{
-                /*try{
-                    var contactLabels = $.makeArray($(this).data('tags').split(','));
-                }
-                catch(err){
-                    var contactLabels = $.makeArray($(this).data('tags'));
-                }*/
+            else {
                 var contactLabels = $.makeArray($(this).data('tags'));
                 var display = []
                 var length = contactLabels.length
-                for(i = 0; i < length; i++){
-                    if($.inArray(parseInt(contactLabels[i]), state.labelDisplay) != -1){
+                for( i = 0; i < length; i++ ){
+                    if ( $.inArray(parseInt(contactLabels[i]), state.labelDisplay) != -1 ){
                         display.push(true)
                     }
-                    else{
+                    else {
                         display.push(false)
                     }
                 }
-                if($.inArray(true, display) != -1){
+                if ( $.inArray(true, display) != -1 ){
                     $(this).show();
                 }
-                else{
+                else {
                     $(this).hide();
                 }
             }
         });
     };
-
-
 
     return{
         init:init,
@@ -398,9 +375,9 @@ var ajaxComponents = (function(){
             state.clickedItem = this
             state.node = $(this).parent()
             state.delete = true
-            userName = state.node.find('p').first().text()
+            var userName = state.node.find('p').first().text()
             var confirmer = confirm("Vill du verkigen ta bort "+ userName +"?");
-            if (confirmer == true) {
+            if ( confirmer == true ) {
                 remove(state.node)
             }
         });
@@ -411,30 +388,30 @@ var ajaxComponents = (function(){
             state.clickedItem = this
             state.node = $(this).parent()
             state.delete = false
-            userName = state.node.find('p').first().text()
+            var userName = state.node.find('p').first().text()
             var confirmer = confirm("Vill du skicka mejl igen till "+ userName +"?");
-            if (confirmer == true) {
+            if ( confirmer == true ) {
                 mail(state.node)
             }
         });
     };
 
     var btnToSpinner = function(){
-        newImg = state.delete ? 'delete_loader' : 'mail_loader';
+        var newImg = state.delete ? 'delete_loader' : 'mail_loader';
         $(state.clickedItem).attr("src", '/static/img/'+newImg+'.png');
         $(state.clickedItem).addClass('spin')
     };
 
     var remove = function(){
-        id = state.node.data('id')
-        url = setUrl()+id
+        var id = state.node.data('id')
+        var url = setUrl()+id
         btnToSpinner()
         sendAjax(url)
     }
 
     var mail = function(){
-        id = state.node.data('id')
-        url = setUrl()+id+'/sendemail/'
+        var id = state.node.data('id')
+        var url = setUrl()+id+'/sendemail/'
         btnToSpinner()
         sendAjax(url)
     }
@@ -471,11 +448,11 @@ var addExhibitor = (function(){
             success: function(response) {
                 $('#spinner').hide()
                 $(":submit").removeAttr("disabled");
-                if (response.status == true){
+                if ( response.status == true ){
                     message.success('Utställaren är tillagd!')
                     $('.target').val('');
                 }
-                else{
+                else {
                     message.error('Något gick fel', response.error)
                 }
             }

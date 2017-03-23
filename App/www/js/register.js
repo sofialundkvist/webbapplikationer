@@ -1,3 +1,5 @@
+/* JS for the attending-page */
+
 function callAjax(email){
     var mejl = JSON.stringify(email)
     return $.ajax({
@@ -8,12 +10,13 @@ function callAjax(email){
     });
 };
 
+
 function validateEmail(email){
     /*
         - Validerar email
         - Returerar ett booleanskt värde
     */
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
+    if ( /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) ){
         return (true)
     }
     return (false)
@@ -28,6 +31,7 @@ function validatzor(thisobj){
     */
     var thisValue = $(thisobj).val()
     var x = $(thisobj).parent();
+
     if ( !thisValue ){
         $(thisobj).css('border-color', 'red');
         $(thisobj).addClass('opaAni');
@@ -42,7 +46,7 @@ function validatzor(thisobj){
 
     }
     else if ( $(thisobj).attr('name') == 'email') {
-        if ( !(validateEmail($(thisobj).val()) )){
+        if ( !(validateEmail($(thisobj).val())) ){
             $(thisobj).css('border-color', 'red');
             $(thisobj).addClass('opaAni');
             $(x).children('.errorMsg').addClass('opaAni');
@@ -55,17 +59,13 @@ function validatzor(thisobj){
             $.when( callAjax($(thisobj).val())).done(function(response){
                 //AJAX-validering
                 if ( response['email'] == true ) {
-                    console.log('1');
                     $(thisobj).css('border-color', '#ccc');
                     $(thisobj).removeClass('opaAni');
                     $(x).children('.errorMsg').removeClass('opaAni');
                     $(x).children('.errorMsg').hide();
-                    //var myBool = true
-                    //return (theBool)
                     return true;
                 }
                 else {
-                    console.log('2');
                     $(thisobj).css('border-color', 'red');
                     $(thisobj).addClass('opaAni');
                     $(x).children('.errorMsg').addClass('opaAni');
@@ -87,7 +87,6 @@ function validatzor(thisobj){
         $(thisobj).removeClass('opaAni');
         $(x).children('.errorMsg').removeClass('opaAni');
         $(x).children('.errorMsg').hide();
-        //var myBool = true;
         return true;
     }
 };
@@ -126,7 +125,7 @@ function checkInputs(){
     });
 
     var inputErrors = $('.opaAni');
-    if (inputErrors.length > 0 ){
+    if ( inputErrors.length > 0 ){
         addScrollClass(inputErrors);
     };
 
@@ -183,7 +182,7 @@ var ajaxSubmit = (function(){
     };
 
     var handleErrors = function(data){
-        for (var k in data) {
+        for ( var k in data ) {
             if (data.hasOwnProperty(k)) {
                 if(data[k] == false){
                     var errorDict = mapper(k)
@@ -240,7 +239,6 @@ var ajaxSubmit = (function(){
             sendAjax(this);
         });
     };
-
 
     return{
         init:init,
