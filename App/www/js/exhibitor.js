@@ -80,6 +80,7 @@ function AjaxFrontEndId(id){
     });
 };
 
+
 function doLabelList(obj){
     /* Returns a list of tag-IDs korrensponding to the connection */
     var theList = []
@@ -129,7 +130,7 @@ function show_hide_labels(){
 
 
 function labelsOnConnection(myLabels, labelList){
-    /* Provides a list of all the labels and the ones that is currently on a connection*/
+    /* Provides a list of all the labels for a user and the labels that is currently on a connection*/
     $.each( myLabels, function(index, label) {
         $('#completeLabelList').prepend('<li data-id="'+label.id+'" class="tags">\
             <p>'+label.text+'</p>\
