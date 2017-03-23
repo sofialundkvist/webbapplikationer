@@ -159,7 +159,7 @@ function saveInfo(connectionID){
 
     var myInfo = {'label_nrs':myTags, 'comment':myComment};
     saveConnectionInfo(myInfo, connectionID);
-}
+};
 
 
 function chooseLabel(thisobj){
@@ -170,7 +170,7 @@ function chooseLabel(thisobj){
     else{
         $(tagClicked).addClass('chosenTag');
     }
-}
+};
 
 
 function AjaxQR(x){
@@ -311,9 +311,9 @@ var addLable = (function(){
 
     var createLabelNode = function(label){
         newLabelEdith = '<li data-id="'+label.id+'" class="tags">\
-                        <p>'+label.text+'</p>\
-                        <div class="deleteLabel">X</div>\
-                    </li>'
+                            <p>'+label.text+'</p>\
+                            <div class="deleteLabel">X</div>\
+                        </li>'
 
         newLabel = '<li data-id="'+label.id+'" class="tags"><p>'+label.text+'</p></li>'
         $('#edithLabels').find('#completeLabelList').prepend(newLabelEdith);
@@ -407,18 +407,6 @@ var User = (function(){
 }());
 
 
-$( document ).ready(function(){
-    searchForAttendant();
-    addLable.eventHandlers()
-    deleteLabel.eventHandler()
-    User.getInfo()
-
-    $('#starScan').click(function(){
-        console.log('klickad!')
-    });
-    document.addEventListener("deviceready", onDeviceReady, false);
-});
-
 $(document).on('keydown', '#searchField', function (event) {
     $('#searchField').keydown(function() {
     if($(this).val().length > 4) {
@@ -437,7 +425,6 @@ function onDeviceReady() {
                   AjaxQR(result.text);
               },
               function (error) {
-                  //alert("Scanning failed: " + error);
                   document.getElementById('alertMessage').innerHTML = 'Kunde inte läsa QR-koden, försök igen';
               },
               {
@@ -455,6 +442,7 @@ function onDeviceReady() {
            );
     });
 }
+
 
 $(".addIcon").on("click", function(){
   $(this).css("filter", "grayscale(0%)");
